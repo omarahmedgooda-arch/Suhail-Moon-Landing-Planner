@@ -1,15 +1,15 @@
-# Suhail (سهيل)
+# SUHAIL (سهيل)
 
 **A lunar landing site navigator. Chart the sky. Choose the landing.**
 
-Suhail is our entry for the **NASA Space Apps Challenge, Cairo 2026**, for the challenge
+SUHAIL is our entry for the **NASA Space Apps Challenge, Cairo 2026**, for the challenge
 **Lunar Landing Site Navigator**.
 It helps mission planners, educators and the public compare candidate landing sites near the
 Moon's south pole by date, using the Sun and Earth positions relative to the local horizon, so
 power and direct-to-Earth communication conditions can be judged in one place.
 
 The name comes from **Suhail (Canopus)**, the star Arab sailors used to find their way. We want
-Suhail to be a compass for choosing where to land.
+SUHAIL to be a compass for choosing where to land.
 
 > **Project video:** [Watch on YouTube](https://youtu.be/gso-zLadcoE)
 
@@ -31,7 +31,7 @@ change of landing date or site means starting the analysis again. Recent landers
 Odysseus (2024) and Athena (2025) both ended up on their sides near the pole, which shows how
 much the landing environment matters.
 
-## What Suhail will do
+## What SUHAIL will do
 
 - **Set priorities.** The user picks levels (High / Medium / Low) for lighting, communication,
   terrain safety and scientific value, plus landing date, flexibility, mission duration and
@@ -74,13 +74,13 @@ All free and public. Exact products and versions will be recorded here when used
 
 ## Limits
 
-Suhail is a **decision-support tool, not a mission guarantee**.
+SUHAIL is a **decision-support tool, not a mission guarantee**.
 
 - Earth visibility is geometric. It is not a communication link budget.
 - Sunlight percentage is not power. Panel angle, dust, temperature and batteries are not modelled.
 - 80 m terrain data gives a regional slope screening. It cannot see rocks or small craters, so
   "safety" here is not touchdown safety.
-- Distance to a permanently shadowed region is only a proxy for scientific access. Suhail makes no
+- Distance to a permanently shadowed region is only a proxy for scientific access. SUHAIL makes no
   claim about water ice at any coordinate.
 - Rankings depend on stated assumptions. They are not a probability of success.
 
@@ -101,7 +101,7 @@ Not available yet. Setup and run instructions will be added once the code exists
 
 ## Team
 
-**FASA Destination Team**: [add member names]
+**FASA**
 
 ## Credits
 
