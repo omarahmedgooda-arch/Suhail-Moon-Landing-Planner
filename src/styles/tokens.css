@@ -1,0 +1,57 @@
+/* SUHAIL · Student mode · design tokens
+   The palette is EXACTLY the five colours Omar sent. Everything else is a mix of those five. */
+
+@font-face { font-family: 'Fraunces'; font-style: normal; font-weight: 100 900; font-display: swap;
+  src: url('../assets/fonts/fraunces-latin-wght-normal.woff2') format('woff2'); }
+@font-face { font-family: 'Fraunces'; font-style: italic; font-weight: 100 900; font-display: swap;
+  src: url('../assets/fonts/fraunces-latin-wght-italic.woff2') format('woff2'); }
+@font-face { font-family: 'Figtree'; font-style: normal; font-weight: 300 900; font-display: swap;
+  src: url('../assets/fonts/figtree-latin-wght-normal.woff2') format('woff2'); }
+@font-face { font-family: 'IBM Plex Mono'; font-style: normal; font-weight: 400; font-display: swap;
+  src: url('../assets/fonts/ibm-plex-mono-latin-400-normal.woff2') format('woff2'); }
+@font-face { font-family: 'IBM Plex Mono'; font-style: normal; font-weight: 500; font-display: swap;
+  src: url('../assets/fonts/ibm-plex-mono-latin-500-normal.woff2') format('woff2'); }
+
+:root {
+  /* the five brand colours */
+  --ink: #24201A;      /* warm near-black  – page */
+  --plum: #3F2548;     /* deep purple      – surfaces */
+  --indigo: #35369C;   /* indigo           – fills, focus, Earth */
+  --lav: #7C679E;      /* lavender         – lines, secondary fills */
+  --cream: #C8C793;    /* cream-olive      – text, Sun, highlights */
+
+  /* derived (mixes of the five only) */
+  --text: var(--cream);                                                     /* 9.3:1 on ink, 7.7:1 on plum */
+  --text-muted: color-mix(in srgb, var(--lav) 40%, var(--cream));           /* 5.0:1 on ink, 4.1:1 on plum – large text/labels on plum only */
+  --text-soft: color-mix(in srgb, var(--lav) 28%, var(--cream));            /* 5.6:1 on ink */
+  --surface-1: color-mix(in srgb, var(--plum) 55%, var(--ink));
+  --surface-2: color-mix(in srgb, var(--plum) 85%, var(--ink));
+  --surface-3: var(--plum);
+  --line: color-mix(in srgb, var(--lav) 45%, transparent);
+  --line-strong: color-mix(in srgb, var(--lav) 80%, transparent);
+  --glow: color-mix(in srgb, var(--cream) 22%, transparent);
+  --focus: var(--cream);
+  --on-cream: var(--ink);
+
+  /* type */
+  --font-display: 'Fraunces', 'Iowan Old Style', Georgia, serif;
+  --font-body: 'Figtree', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-mono: 'IBM Plex Mono', ui-monospace, 'SFMono-Regular', Menlo, monospace;
+
+  --step--1: clamp(0.8rem, 0.78rem + 0.1vw, 0.875rem);
+  --step-0: clamp(1rem, 0.96rem + 0.2vw, 1.125rem);
+  --step-1: clamp(1.2rem, 1.1rem + 0.5vw, 1.45rem);
+  --step-2: clamp(1.5rem, 1.25rem + 1.2vw, 2.1rem);
+  --step-3: clamp(2rem, 1.5rem + 2.4vw, 3.3rem);
+  --step-4: clamp(2.5rem, 1.6rem + 4.4vw, 5rem);
+
+  /* layout */
+  --gutter: max(16px, env(safe-area-inset-left, 0px));
+  --gutter-r: max(16px, env(safe-area-inset-right, 0px));
+  --maxw: 1180px;
+  --radius: 16px;
+  --radius-sm: 10px;
+  --ease: cubic-bezier(.2,.7,.2,1);
+
+  color-scheme: dark;
+}
