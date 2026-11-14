@@ -11,15 +11,17 @@ power and direct-to-Earth communication conditions can be judged in one place.
 The name comes from **Suhail (Canopus)**, the star Arab sailors used to find their way. We want
 SUHAIL to be a compass for choosing where to land.
 
+> **Live demo:** [suhail-moon-landing-planner.vercel.app](https://suhail-moon-landing-planner.vercel.app/)
+>
 > **Project video:** [Watch on YouTube](https://youtu.be/gso-zLadcoE)
 
 ---
 
 ## Status
 
-**Planning stage. Development starts at the hackathon (Nov 13, 2026).**
-No application code or data has been committed before the event. Everything in this README
-describes what we plan to build.
+**Built at the hackathon (Nov 13–14, 2026) and live at
+[suhail-moon-landing-planner.vercel.app](https://suhail-moon-landing-planner.vercel.app/).**
+Developer notes (run commands, data pipeline, decision rules) are in [`docs/DEVELOPER.md`](docs/DEVELOPER.md).
 
 ---
 
