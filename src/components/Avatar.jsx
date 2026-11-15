@@ -80,6 +80,8 @@ export function Avatar({ id, mood = 'happy', size = 96, label, mode: modeProp })
   const look = LOOK[id] ?? LOOK.sunlight;
   const clip = useId();
   const fig = figureFor(mode, id, mood);
+  // Expert flight director has no drawn figure: show Suhail, the guiding star.
+  if (!fig && id === 'leader' && mode === 'expert') return <SuhailStar size={size} glow={false} label={label} />;
   if (fig) {
     return (
       <span className={`figure mood-${mood} fig-${mode}`} style={{ '--fs': `${size}px` }} role={label ? 'img' : undefined} aria-label={label} aria-hidden={label ? undefined : true}>

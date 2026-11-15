@@ -68,8 +68,8 @@ export const EXPERT = {
     inspired: { who: 'Sultan bin Salman Al Saud', where: 'Saudi Arabia', who_ar: 'سلطان بن سلمان آل سعود', where_ar: 'المملكة العربية السعودية', what_ar: 'اختصاصي حمولة في رحلة المكوك STS-51-G (يونيو 1985)، وأول عربي وأول مسلم يصعد إلى الفضاء؛ وأطلق الطاقم خلالها قمر الاتصالات عربسات 1B.', what: 'Payload specialist on Space Shuttle mission STS-51-G (June 1985), the first Arab and first Muslim in space; the crew deployed the Arabsat-1B communications satellite.', photo: 'sultan-bin-salman.jpg', photoCredit: 'Photo: NASA', photoCredit_ar: 'الصورة: ناسا', source: { label: 'Wikipedia – STS-51-G', url: 'https://en.wikipedia.org/wiki/STS-51-G' } },
   },
   science: {
-    name: 'Dr. Najm', meaning: 'Najm = star', role: 'Planetary scientist · science lead',
-    name_ar: 'د. نجم', meaning_ar: 'نجم', role_ar: 'عالم كواكب · مسؤول العلوم',
+    name: 'Dr. Saad', meaning: 'Sa‘d = the lucky stars (Sa‘d al-Su‘ud)', role: 'Planetary scientist · science lead',
+    name_ar: 'د. سعد', meaning_ar: 'سعد = نجوم السعود', role_ar: 'عالم كواكب · مسؤول العلوم',
     voice_ar: 'متحمس ومقنع. يجرّ الحديث دائمًا نحو الجليد والمصائد الباردة، وهو الأكثر استعدادًا لتقبّل المخاطرة من أجل هدف أفضل.',
     cares_ar: 'المسافة إلى المناطق المظللة دائمًا، واحتمال وجود جليد الماء، وطول الرحلة.', redLine_ar: 'الموقع الآمن البعيد عن الهدف مجرد «موقف سيارات جميل».', risk_ar: 'مرتفع', argues_ar: 'من العائد العلمي.',
     voice: 'Enthusiastic and persuasive. Always pulls the conversation toward the ice and the cold traps, and is the one most willing to accept risk for a better target.',
