@@ -6,7 +6,7 @@ Context for Claude Code (or any new contributor) picking this project up.
 **SUHAIL (سهيل)**, the Lunar Landing Site Navigator, by the **FASA Destination Team** (SUT) for
 **NASA Space Apps Cairo 2026**. Owner of the Student mode: Omar. The product flow was written by a
 teammate and lives in `docs/product-flow.md` (English + the Arabic original). **Implement that flow;
-if the code and the doc disagree, ask the author.** English only for now.
+if the code and the doc disagree, ask the author.** The app is bilingual: English (default on every new visit) and Arabic (`src/i18n.js`; Expert in Modern Standard Arabic, Student in Egyptian Arabic; never translate word for word).
 
 Read `README.md` first (run commands, data pipeline, decision rules, folder map).
 
@@ -43,8 +43,8 @@ Read `README.md` first (run commands, data pipeline, decision rules, folder map)
 - Old `.map-cap` rules from the removed MoonMap still exist earlier in `app.css`; the later override wins.
 
 ## Commands
-`npm run dev` · `npm test` · `npm run build` · `npm run build:single` (one-file `dist-single/index.html`).
-`npm test` must stay green before every commit (37 tests: engine, dialogue, real data, replan, report).
+`npm run dev` · `npm test` · `npm run build` · `npm run offline` (one-file `SUHAIL-offline.html`, council photos embedded). On Windows: `RUN.bat`, `OPEN-OFFLINE.bat`, `TEST.bat`.
+`npm test` must stay green before every commit (39 tests: engine, dialogue, Arabic dialogue, real data, replan, report).
 
 ## Regenerating the data
 `python3 tools/pipeline/build_real_data.py --dem <LDEM tif> --psr <LPSR shapefile base name>` (≈ 7 s).
@@ -57,7 +57,6 @@ Output: `src/data/real-sites.json` + `src/assets/map/*.webp`. Do not hand-edit t
 - Validate the astronomy model against JPL Horizons (`handoff/fetch_horizons.py --start 2027-07-15`).
 - DEM is 80 m/pixel: slopes are smoother than lander-scale truth; add a 20 m product if it becomes available.
 - The "4 best-lit sites per region + spread" candidate rule and the 10 km² PSR cut-off are team choices.
-- Arabic version (strings in `src/content/*.js`, `src/engine/banter.js`, components; layout is RTL-ready).
 - Report as PDF without the print dialog; share link; saving missions between visits.
 
 ## Commit attribution
