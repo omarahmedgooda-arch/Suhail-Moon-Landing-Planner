@@ -12,7 +12,7 @@ export const MISSION_STORIES = [
       { scene: 'approach', k: 'The target', say: 'Its target: the area near the crater Malapert A. Now it has to come down gently and stand on its four legs.', k_ar: 'الهدف', say_ar: 'هدفها المنطقة القريبة من فوهة مالابرت A. والآن عليها أن تنزل بهدوء وتقف على أرجلها الأربع.' },
       { scene: 'fast', k: 'Your guess', say: 'Uh-oh. Odysseus is coming down faster than planned. What do you think happens next?', k_ar: 'خمّن', say_ar: 'أوه! أوديسيوس تنزل أسرع من المخطط. ماذا تتوقع أن يحدث؟',
         guess: { options: [
-          { t: 'It lands perfectly, no problem', t_ar: 'تهبط تمامًا بلا مشاكل', ok: false },
+          { t: 'It lands perfectly, no problem', t_ar: 'تهبط بسلام ومن غير أي مشكلة', ok: false },
           { t: 'A leg catches the ground and it tips onto its side', t_ar: 'تعلق رجلها في الأرض فتنقلب على جنبها', ok: true },
           { t: 'It bounces back into space', t_ar: 'ترتد عائدة إلى الفضاء', ok: false },
         ] } },

@@ -13,6 +13,10 @@ import { requirementRows } from '../engine/report.js';
 import { dayToIso, fmtDay, fmtDayAr, isoToDay, planMission, windowDays } from '../engine/plan.js';
 import { DataWindowNote, ReasonChips, RequirementsEditor, SitePicker, StudentPicker, defaultExpert, studentToMission } from './Forms.jsx';
 
+/* Team figures drawn for each member (src/assets/team/<id>.webp). */
+const TEAM_FIGS = import.meta.glob('../assets/team/*.webp', { eager: true, import: 'default', query: '?url' });
+const teamFig = (id) => (id ? TEAM_FIGS[`../assets/team/${id}.webp`] ?? null : null);
+
 /* ------------------------------------------------------------------ home */
 export function Home({ onStudent, onExpert }) {
   const t = useT();
@@ -37,7 +41,7 @@ export function Home({ onStudent, onExpert }) {
               <span className="hc-k">{t('Student', 'للطلاب')}</span>
               <strong>{t('Lunar Landing Academy', 'أكاديمية الهبوط على القمر')}</strong>
               <span>{t('Watch two real missions that tipped over, learn the five things that decide a landing site, then save a mission run by a very silly crew.',
-                'اتفرج على مهمتين حقيقيتين اتقلبوا على القمر، واتعلم الخمس حاجات اللي بتحدد مكان الهبوط، وبعدين أنقذ مهمة مع طاقم غلبان جدًا.')}</span>
+                'اتفرج على مهمتين حقيقيتين اتقلبوا على القمر، واتعلم الخمس حاجات اللي بتحدد مكان الهبوط، وبعدين أنقذ مهمة مع طاقم أفكاره عجيبة جدًا.')}</span>
               <span className="hc-go" aria-hidden="true">{t('Start learning →', 'يلا نتعلم ←')}</span>
             </button>
           </li>
@@ -71,7 +75,7 @@ export function Home({ onStudent, onExpert }) {
           <ul className="member-grid">
             {TEAM.members.map((m) => (
               <li key={m.name} className="member">
-                <span className="member-mono" aria-hidden="true">{m.name.split(' ').filter(Boolean).slice(0, 2).map((w) => w[0]).join('')}</span>
+                {teamFig(m.figure) ? <img className="member-fig" src={teamFig(m.figure)} alt="" loading="lazy" width="72" height="72" /> : <span className="member-mono" aria-hidden="true">{m.name.split(' ').filter(Boolean).slice(0, 2).map((w) => w[0]).join('')}</span>}
                 <div className="member-body">
                   <strong>{tx(m, 'name', lang)}</strong>
                   <span className="member-field">{tx(m, 'field', lang) ?? tx(m, 'faculty', lang)}</span>

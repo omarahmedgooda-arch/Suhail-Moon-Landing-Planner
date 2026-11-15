@@ -955,3 +955,6 @@ table.rank-table .cell .mono { white-space: pre; display: inline-block; vertical
 :root[lang="ar"] .ms-badge strong { font-size: 1.15rem; }
 :root[dir="rtl"] svg { direction: ltr; }
 :root[lang="ar"] .numfield > span, :root[lang="ar"] .numfield span:first-child, :root[lang="ar"] .kv dt, :root[lang="ar"] .kv2 dt, :root[lang="ar"] .cast-dl dt, :root[lang="ar"] .mini-h, :root[lang="ar"] .rm-tabs button, :root[lang="ar"] summary span, :root[lang="ar"] .pc-row .mono, :root[lang="ar"] .seg button { font-family: var(--font-body); letter-spacing: 0; text-transform: none; }
+
+.member { grid-template-columns: 72px minmax(0, 1fr); align-items: center; }
+.member-fig { width: 72px; height: 72px; border-radius: 16px; object-fit: cover; object-position: top; background: color-mix(in srgb, var(--indigo) 55%, var(--plum)); border: 1px solid var(--line-strong); }

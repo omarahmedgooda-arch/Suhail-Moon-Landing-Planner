@@ -12,9 +12,9 @@ const STAGES = [
   { id: 'watch', n: '01', title: 'Mission stories', blurb: 'Two real lunar landers, what they set out to do and what went wrong on touchdown.', cta: 'Start watching',
     title_ar: 'قصص المهمات', blurb_ar: 'مركبتين حقيقيتين نزلوا على القمر: كانوا رايحين يعملوا إيه، وإيه اللي باظ لحظة الهبوط.', cta_ar: 'يلا نتفرج' },
   { id: 'learn', n: '02', title: 'Become a landing expert', blurb: 'The five aspects scientists check before choosing where to land.', cta: 'Start learning',
-    title_ar: 'بقى خبير هبوط', blurb_ar: 'الخمس حاجات اللي العلماء بيراجعوها قبل ما يختاروا مكان الهبوط.', cta_ar: 'يلا نتعلم' },
+    title_ar: 'خليك خبير هبوط', blurb_ar: 'الخمس حاجات اللي العلماء بيراجعوها قبل ما يختاروا مكان الهبوط.', cta_ar: 'يلا نتعلم' },
   { id: 'play', n: '03', title: 'Try it yourself: Save the Mission', blurb: 'A 2D game: command a very silly crew, make five landing decisions and keep the lander alive.', cta: 'Play now',
-    title_ar: 'جرّب بنفسك: أنقذ المهمة', blurb_ar: 'لعبة 2D: قود طاقم غلبان جدًا، خد خمس قرارات هبوط، وخلي المركبة عايشة.', cta_ar: 'العب دلوقتي' },
+    title_ar: 'جرّب بنفسك: أنقذ المهمة', blurb_ar: 'لعبة 2D: قود طاقم أفكاره عجيبة جدًا، خد خمس قرارات هبوط، وخلي المركبة عايشة.', cta_ar: 'العب دلوقتي' },
 ];
 
 function StageBar({ stage, done, onGo }) {

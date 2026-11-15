@@ -2,6 +2,7 @@ import { Defs, Stars } from './Art.jsx';
 import { horizonAt, SUN_LIMB_DEG } from '../engine/rules.js';
 import { useWidth } from '../hooks.js';
 import { useLang } from '../i18n.js';
+import { arPlural } from '../engine/dialogue.js';
 
 const H = 250, Y0 = 176, K = 16; // 16 px per degree of elevation (vertical stretch is deliberate)
 // Wide screens draw on a 720-unit canvas that scales up; on phones the canvas is the real width so text stays readable.
@@ -169,7 +170,7 @@ export function Timeline({ site, t0, hours, scrub }) {
         {dark[1] - dark[0] > 0 && (
           <g>
             <path d={`M${sx(dark[0])} 98v6H${sx(dark[1])}v-6`} fill="none" stroke="var(--cream)" strokeWidth="1.6" />
-            <text x={clampX((sx(dark[0]) + sx(dark[1])) / 2, TW, 88)} y="118" textAnchor="middle" fontFamily="var(--font-mono)" fontSize="11" fill="var(--cream)">{ar ? `أطول ظلام: ${dark[1] - dark[0]} ساعة` : `longest dark stretch: ${dark[1] - dark[0]} h`}</text>
+            <text x={clampX((sx(dark[0]) + sx(dark[1])) / 2, TW, 88)} y="118" textAnchor="middle" fontFamily="var(--font-mono)" fontSize="11" fill="var(--cream)">{ar ? arPlural(`أطول ظلام: ${dark[1] - dark[0]} ساعة`) : `longest dark stretch: ${dark[1] - dark[0]} h`}</text>
           </g>
         )}
         <g transform={`translate(${sx(t0 + Math.min(scrub, hours - 1))} 0)`}>

@@ -9,6 +9,7 @@ import { batteryForHours, darkLoadW, enduranceHours, powerPreset } from '../engi
 import { castFor } from '../content/cast.js';
 import { tx, useLang, useT } from '../i18n.js';
 import { dayToIso, fmtDay, fmtDayAr, isoToDay, windowDays } from '../engine/plan.js';
+import { arPlural } from '../engine/dialogue.js';
 
 /* ------------------------------------------------------------------ shared bits */
 function MissionIcon({ kind }) {
@@ -271,7 +272,7 @@ export function RequirementsEditor({ value: d, onChange, data, idp = 'x', showDa
           <label className="numfield" htmlFor={`${idp}-to`}><span>{t('Moon lift-off date (end of surface ops)', 'تاريخ المغادرة من القمر (نهاية العمل على السطح)')}</span><input id={`${idp}-to`} type="date" min={d.fromIso || dayToIso(data, 0)} max={dayToIso(data, lastDay)} value={d.toIso} onChange={(e) => set({ toIso: e.target.value })} /></label>
         </div>
       )}
-      {showDates && <p className="field-note">{lang === 'ar' ? `يمكن الهبوط بدءًا من تاريخ الإطلاق مضافًا إليه مدة الرحلة، ويجب أن تنتهي المهمة على السطح (${num(d.durationDays) || 1} يومًا) قبل تاريخ المغادرة. ويختبر سهيل كل يوم هبوط ممكن بينهما.` : `Landing can happen from take-off + transit; the surface mission (${num(d.durationDays) || 1} days) must end by the lift-off date. SUHAIL tests every landing day in between.`}</p>}
+      {showDates && <p className="field-note">{lang === 'ar' ? arPlural(`يمكن الهبوط بدءًا من تاريخ الإطلاق مضافًا إليه مدة الرحلة، ويجب أن تنتهي المهمة على السطح (${num(d.durationDays) || 1} يومًا) قبل تاريخ المغادرة. ويختبر سهيل كل يوم هبوط ممكن بينهما.`) : `Landing can happen from take-off + transit; the surface mission (${num(d.durationDays) || 1} days) must end by the lift-off date. SUHAIL tests every landing day in between.`}</p>}
       {showDates && <DataWindowNote data={data} />}
     </div>
   );

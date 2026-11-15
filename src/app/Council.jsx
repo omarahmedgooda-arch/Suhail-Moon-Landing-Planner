@@ -11,6 +11,7 @@ import { useReducedMotion } from '../hooks.js';
 import { useLang, useT } from '../i18n.js';
 import { EnergyPanel, SiteDossier } from './Science.jsx';
 import { PlaceNumbers, WhyButton } from './Numbers.jsx';
+import { arPlural } from '../engine/dialogue.js';
 
 /** Seat every speaker on one side of the table: guide in the middle-left, the five split left/right. */
 const SIDE = { guide: 'left', sunlight: 'right', night: 'left', comms: 'right', terrain: 'left', science: 'right' };
@@ -151,7 +152,7 @@ export default function Council({ run, data, mode, onVerdict, onBack }) {
           <div className="science">
             <div className="panel"><h3 className="panel-title">{t('Site dossier', 'ملف الموقع')} · {place.regionName}</h3><SiteDossier place={place} data={data} mission={mission} /></div>
             <div className="panel"><h3 className="panel-title">{t('Solar energy & thermal environment assessment', 'تقييم الطاقة الشمسية والبيئة الحرارية')}</h3>
-              <p className="panel-text small">{ar ? `محاكاة ساعة بساعة لهذا الموقع خلال نافذة مهمتك (${mission.durationDays} يومًا بدءًا من ${fmtDayAr(data, place.day)})، باستخدام أفق التضاريس الحقيقي وهندسة الشمس.` : `Hour-by-hour simulation of this site for your mission window (${mission.durationDays} days from ${fmtDay(data, place.day)}), using the real terrain horizon and Sun geometry.`}</p>
+              <p className="panel-text small">{ar ? arPlural(`محاكاة ساعة بساعة لهذا الموقع خلال نافذة مهمتك (${mission.durationDays} يومًا بدءًا من ${fmtDayAr(data, place.day)})، باستخدام أفق التضاريس الحقيقي وهندسة الشمس.`) : `Hour-by-hour simulation of this site for your mission window (${mission.durationDays} days from ${fmtDay(data, place.day)}), using the real terrain horizon and Sun geometry.`}</p>
               <EnergyPanel sim={energy[idx]} data={data} day={place.day} mission={mission} />
             </div>
           </div>

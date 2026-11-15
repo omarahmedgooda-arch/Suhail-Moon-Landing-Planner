@@ -14,6 +14,7 @@ import { useReducedMotion } from '../hooks.js';
 import { useLang, useT } from '../i18n.js';
 import { ASPECT_LABEL_AR } from '../content/missions.js';
 import { PlaceNumbers, RankTable, StartDays, limitText } from './Numbers.jsx';
+import { arPlural } from '../engine/dialogue.js';
 
 const slug = (s) => s.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '').slice(0, 40) || 'mission';
 
@@ -176,7 +177,7 @@ export default function Verdict({ run, data, mode, onReplan, onNew, onBack }) {
 
             <div className="panel">
               <h3 className="panel-title">{t('Which start days work here', 'أيام البدء التي تنجح هنا')}</h3>
-              <p className="panel-text small">{t(`SUHAIL tested every possible start day for ${a_an(mission.durationDays)} ${mission.durationDays}-day mission at this site.`, `اختبر سهيل كل يوم بدء ممكن لمهمة مدتها ${mission.durationDays} يومًا في هذا الموقع.`)}</p>
+              <p className="panel-text small">{t(`SUHAIL tested every possible start day for ${a_an(mission.durationDays)} ${mission.durationDays}-day mission at this site.`, arPlural(`اختبر سهيل كل يوم بدء ممكن لمهمة مدتها ${mission.durationDays} يومًا في هذا الموقع.`))}</p>
               <StartDays flex={w.flex} bestDay={w.day} data={data} />
             </div>
 

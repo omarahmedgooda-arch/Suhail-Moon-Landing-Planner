@@ -28,7 +28,7 @@ export default function CastPage({ mode, onStart }) {
         <h2 className="title" id="cast-t">{expert ? t('Meet the council', 'تعرّف على المجلس') : t('Meet the crew', 'تعرّف على الطاقم')}</h2>
         <p className="lead small">{expert
           ? t('Five specialists, one per aspect, argue about every candidate site; the flight director decides. Each character is original: we borrowed a field and a spirit from a real Arab scientist or astronaut, not their words or personality. Everything the characters say is generated from the data.', 'خمسة متخصصين، واحد لكل جانب، يتناقشون في كل موقع مرشح، ومدير الرحلة يقرر. كل شخصية من ابتكارنا: استلهمنا المجال والروح من عالم أو رائد فضاء عربي حقيقي، لا كلامه ولا شخصيته. وكل ما تقوله الشخصيات مبني على البيانات.')
-          : t('Five clumsy crew members, one per aspect, and the wise doctor who keeps the mission on track.', 'خمسة أفراد طاقم غلابة، واحد لكل جانب، والدكتور الحكيم اللي بيحافظ على المهمة.')}</p>
+          : t('Five clumsy crew members, one per aspect, and the wise doctor who keeps the mission on track.', 'خمسة أفراد في الطاقم أفكارهم عجيبة، واحد لكل جانب، والدكتور الحكيم اللي بيحافظ على المهمة.')}</p>
         <ul className="cast-grid">
           {ORDER.map((a) => {
             const c = cast.members[a];
@@ -49,7 +49,7 @@ export default function CastPage({ mode, onStart }) {
                       <div><dt>{t('Cares about', 'يهتم بـ')}</dt><dd>{tx(c, 'cares', lang)}</dd></div>
                       <div><dt>{t('Red line', 'خط أحمر')}</dt><dd>{tx(c, 'redLine', lang)}</dd></div>
                       <div><dt>{t('Risk appetite', 'تقبّل المخاطرة')}</dt><dd>{tx(c, 'risk', lang)}</dd></div>
-                      <div><dt>{t('Argues', 'حجته')}</dt><dd>{tx(c, 'argues', lang)}</dd></div>
+                      <div><dt>{t('Argues', 'يستند إلى')}</dt><dd>{tx(c, 'argues', lang)}</dd></div>
                     </dl>
                     <div className="inspired">
                       <InspiredPhoto file={c.inspired.photo} who={I(c, 'who')} />

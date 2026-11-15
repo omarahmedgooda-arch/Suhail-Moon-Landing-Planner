@@ -177,6 +177,13 @@ export function speakExpert(aspect, evalResult, ctx) {
   return { mood: MOOD[status], status, line, used };
 }
 
+/** Arabic number agreement: 3–10 take the plural (5 ساعات، 8 أيام); other counts keep the singular/accusative form. */
+export function arPlural(text) {
+  return text
+    .replace(/(^|[^\d.])(\d+)(\*\*)? ساعة/g, (m, a, d, b) => (+d >= 3 && +d <= 10 ? `${a}${d}${b ?? ''} ساعات` : m))
+    .replace(/(^|[^\d.])(\d+)(\*\*)? يومًا/g, (m, a, d, b) => (+d >= 3 && +d <= 10 ? `${a}${d}${b ?? ''} أيام` : +d <= 2 ? `${a}${d}${b ?? ''} يوم` : m));
+}
+
 /** Arabic (Modern Standard, plain and technical) voices for the Expert council. Same numbers, same `used`. */
 function speakExpertAr(aspect, a, status, take, r0, E, used) {
   let line = '';
@@ -226,5 +233,5 @@ function speakExpertAr(aspect, a, status, take, r0, E, used) {
     else if (status === 'marginal') line = `المصيدة الباردة على بعد **${take(m.value)} كم**، والحد ${take(m.limit)} كم. يمكن الوصول إليها، لكن الرحلة ستأكل من الجدول الزمني.`;
     else line = `**${take(m.value)} كم** إلى أقرب مصيدة باردة، أبعد من مدى ${take(m.limit)} كم. موقع آمن بهذا البعد عن الهدف مجرد موقف سيارات جميل.`;
   }
-  return { mood: MOOD[status], status, line, used };
+  return { mood: MOOD[status], status, line: arPlural(line), used };
 }

@@ -6,7 +6,7 @@ import { ORDER } from '../content/characters.js';
 import { castFor } from '../content/cast.js';
 import { SUITABILITY } from './energy.js';
 import { ASPECT_LABEL, ASPECT_LABEL_AR } from '../content/missions.js';
-import { MOOD, speak, speakExpert } from './dialogue.js';
+import { MOOD, arPlural, speak, speakExpert } from './dialogue.js';
 import { fmtDay, fmtDayAr, fmtRange, fmtRangeAr, relaxHints } from './plan.js';
 import { METRIC_UNIT } from './rules.js';
 
@@ -322,7 +322,7 @@ export function leaderScript(result, { data, replan = null, mode = 'student', en
 // Written as natural Modern Standard Arabic, not a word-for-word translation. Same numbers, same `used`.
 
 const iso = (x) => `\u2068${x}\u2069`;
-const lineAr = (key, speaker, who, mood, text, used = [], status = null) => ({ key, speaker, name: who.name_ar ?? who.name, role: who.role_ar ?? who.role, mood, status, text, used });
+const lineAr = (key, speaker, who, mood, text, used = [], status = null) => ({ key, speaker, name: who.name_ar ?? who.name, role: who.role_ar ?? who.role, mood, status, text: arPlural(text), used });
 const LBL = (a) => ASPECT_LABEL_AR[a];
 const siteNo = (p) => p.site.name.split('·')[1]?.trim() ?? '';
 const coordAr = (s) => `${Math.abs(s.lat_deg).toFixed(2)}° ${s.lat_deg < 0 ? 'جنوبًا' : 'شمالًا'}، ${s.lon_deg.toFixed(2)}° شرقًا`;
@@ -456,7 +456,7 @@ function leaderScriptAr(result, { data, replan, energy, vote }) {
   if (ev.eligible) {
     const active = ORDER.filter((a) => ACTIVE_STATUS.includes(ev.aspects[a].status));
     const top2 = [...active].sort((a, b) => ev.aspects[b].score - ev.aspects[a].score).slice(0, 2);
-    const why = top2.map((a) => factAr(a, ev.aspects[a], take)).join('، كما أن ');
+    const why = top2.map((a) => factAr(a, ev.aspects[a], take)).join('، و');
     const u1 = [...used]; used.length = 0;
     lines.push(lineAr('l-verdict', 'leader', LEADER, 'happy',
       `نصيحتي: اهبطوا في **${iso(winner.regionName)}**، الموقع **${siteNo(winner)}** عند ${coordAr(winner.site)} (${ev.verdict === 'go' ? 'مناسب للهبوط' : 'ممكن بحذر'}). والأسباب: ${why}.`, u1, ev.verdict));
@@ -472,7 +472,7 @@ function leaderScriptAr(result, { data, replan, energy, vote }) {
       const gap = Math.round(ev.overall) - Math.round(second.ev.overall);
       const sc = (x) => { used.push(x); return n(x); };
       const lead = gap > 0
-        ? `يتفوق على ${iso(second.regionName)} بفارق **${sc(gap)}** ${gap === 1 ? 'نقطة' : gap === 2 ? 'نقطتين' : gap <= 10 ? 'نقاط' : 'نقطة'}.`
+        ? `يتفوق على ${iso(second.regionName)} بفارق **${sc(gap)}** في الدرجة.`
         : `يتعادل مع ${iso(second.regionName)} في الدرجة، ويفوز بالترجيح لأن أضعف جوانبه أقوى.`;
       const txt = `${lead} الفرق الأكبر في ${LBL(bestA)}: **${sc(m1.value)}${unitAr(m1.key)}** هنا مقابل ${sc(m2.value)}${unitAr(m2.key)} هناك.`;
       lines.push(lineAr('l-second', 'leader', LEADER, 'thinking', txt, [...used]));

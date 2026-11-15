@@ -9,6 +9,7 @@ import { limitText } from './Numbers.jsx';
 import { useLang, useT } from '../i18n.js';
 import { ASPECT_LABEL_AR } from '../content/missions.js';
 import { fmtDayAr, fmtRangeAr } from '../engine/plan.js';
+import { arPlural } from '../engine/dialogue.js';
 const ROW_AR = ["حرارة السطح المتوقعة (الأدنى / المتوسط / الأعلى)", "الإشعاع الشمسي على أرض مستوية (الذروة / المتوسط)", "القدرة الكهربائية للألواح (الذروة / المتوسط)", "إجمالي الطاقة الشمسية المنتجة", "إجمالي الطاقة الكهربائية المستهلكة", "إجمالي التعرض للشمس", "أطول ظلام متواصل", "تحمّل البطارية مع أحمال الظلام", "شحن البطارية (الأدنى / النهائي)", "فائض (+) أو عجز (−) الطاقة", "الملاءمة العامة للطاقة الشمسية"];
 const UNIT_AR = { h: 'ساعة', '': '' };
 const coordAr = (st) => `${Math.abs(st.lat_deg).toFixed(2)}° جنوبًا، ${st.lon_deg.toFixed(2)}° شرقًا`;
@@ -97,8 +98,8 @@ export function SiteDossier({ place, data, mission }) {
           <div><dt>{t('Nearest PSR ≥ 10 km² / any PSR', 'أقرب منطقة مظللة ≥ 10 كم² / أي منطقة مظللة')}</dt><dd className="mono num">{s.static.psr_distance_km} km / {s.static.psr_distance_any_km ?? '—'} km</dd></div>
           <div><dt>{t('Region', 'المنطقة')}</dt><dd>{ar ? `${region?.name} · منطقة مرشحة لـ Artemis III · ${region?.n_sites} نقاط مرشحة` : `${region?.name} · Artemis III candidate region · ${region?.n_sites} candidate points`}</dd></div>
           <div><dt>{t('Mission window (UTC)', 'نافذة المهمة (UTC)')}</dt><dd>{ar ? fmtRangeAr(data, place.day, mission.durationDays) : fmtRange(data, place.day, mission.durationDays)}</dd></div>
-          <div><dt>{t('Sun above terrain horizon', 'الشمس فوق أفق التضاريس')}</dt><dd className="mono">{ar ? `${m.sunPct}% · أطول ظلام ${m.maxDarkH} ساعة` : `${m.sunPct}% · longest dark ${m.maxDarkH} h`}</dd></div>
-          <div><dt>{t('Earth above terrain horizon', 'الأرض فوق أفق التضاريس')}</dt><dd className="mono">{ar ? `${m.earthPct ?? '—'}% · أطول انقطاع ${m.earthGapH ?? '—'} ساعة` : `${m.earthPct ?? '—'}% · longest blackout ${m.earthGapH ?? '—'} h`}</dd></div>
+          <div><dt>{t('Sun above terrain horizon', 'الشمس فوق أفق التضاريس')}</dt><dd className="mono">{ar ? arPlural(`${m.sunPct}% · أطول ظلام ${m.maxDarkH} ساعة`) : `${m.sunPct}% · longest dark ${m.maxDarkH} h`}</dd></div>
+          <div><dt>{t('Earth above terrain horizon', 'الأرض فوق أفق التضاريس')}</dt><dd className="mono">{ar ? arPlural(`${m.earthPct ?? '—'}% · أطول انقطاع ${m.earthGapH ?? '—'} ساعة`) : `${m.earthPct ?? '—'}% · longest blackout ${m.earthGapH ?? '—'} h`}</dd></div>
           <div><dt>{t('Start days passing every rule', 'أيام البدء التي تجتاز كل القواعد')}</dt><dd className="mono num">{place.flex.eligibleDays} / {place.flex.totalDays}</dd></div>
           <div><dt>{t('Data products', 'منتجات البيانات')}</dt><dd className="small">{q.dem ?? 'LOLA LDEM'} · {ar ? `حساب الأفق حتى ${q.horizon_range_km ?? 150} كم${q.edge_limited ? ' (محدود بالحافة)' : ''} · المواقع الفلكية: ${q.geometry ?? 'تقريبية'}` : `horizon ray-cast to ${q.horizon_range_km ?? 150} km${q.edge_limited ? ' (edge-limited)' : ''} · ephemeris: ${q.geometry ?? 'approximate'}`}</dd></div>
         </dl>
@@ -112,7 +113,7 @@ export function SiteDossier({ place, data, mission }) {
           </ul>
           <h4 className="mini-h">{t('Features', 'المميزات')}</h4>
           <ul className="feature-list">
-            <li>{s.static.slope_deg <= 5 ? t('Gentle landing pad by DEM standards', 'منطقة هبوط لطيفة بمقاييس نموذج الارتفاعات') : s.static.slope_deg <= 10 ? t('Moderate slopes; landing ellipse must avoid the steeper cells', 'منحدرات متوسطة؛ يجب أن يتجنب نطاق الهبوط الخلايا الأشد انحدارًا') : t('Steep terrain at DEM scale', 'تضاريس شديدة الانحدار بمقياس نموذج الارتفاعات')} ({s.static.slope_deg}°).</li>
+            <li>{s.static.slope_deg <= 5 ? t('Gentle landing pad by DEM standards', 'منطقة هبوط ميلها خفيف بمقياس نموذج الارتفاعات') : s.static.slope_deg <= 10 ? t('Moderate slopes; landing ellipse must avoid the steeper cells', 'منحدرات متوسطة؛ يجب أن يتجنب نطاق الهبوط الخلايا الأشد انحدارًا') : t('Steep terrain at DEM scale', 'تضاريس شديدة الانحدار بمقياس نموذج الارتفاعات')} ({s.static.slope_deg}°).</li>
             <li>{m.sunPct >= 90 ? t('Near-continuous illumination during this window — a classic polar “peak of light”.', 'إضاءة شبه مستمرة خلال هذه النافذة، وهي «قمة ضوء» قطبية نموذجية.') : m.sunPct >= 60 ? t('Mostly sunlit, with terrain-driven dark spells.', 'مضاء معظم الوقت، مع فترات ظلام تسببها التضاريس.') : t('Frequent terrain shadowing.', 'التضاريس تحجب الشمس كثيرًا.')}</li>
             <li>{s.static.psr_distance_km <= 5 ? t('A large cold trap (PSR) within walking/roving distance.', 'مصيدة باردة كبيرة (منطقة مظللة) على مسافة قريبة جدًا.') : s.static.psr_distance_km <= 15 ? t('A large cold trap within a rover traverse.', 'مصيدة باردة كبيرة في متناول رحلة مركبة جوّالة.') : t('Large cold traps are distant.', 'المصائد الباردة الكبيرة بعيدة.')}</li>
             <li>{t('Highest terrain on the horizon:', 'أعلى تضاريس على الأفق:')} <span className="num">{r1(Math.max(...s.horizon_deg))}°</span> {t('at azimuth', 'عند الاتجاه')} <span className="num">{s.horizon_deg.indexOf(Math.max(...s.horizon_deg)) * (360 / s.horizon_deg.length)}°</span>.</li>
