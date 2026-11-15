@@ -1,6 +1,6 @@
-# CLAUDE.md · SUHAIL
+# Contributing to SUHAIL
 
-Context for Claude Code (or any new contributor) picking this project up.
+Rules and context for anyone (or any AI coding assistant) working on this project.
 
 ## What this is
 **SUHAIL (سهيل)**, the Lunar Landing Site Navigator, by the **FASA Destination Team** (SUT) for
@@ -60,4 +60,4 @@ Output: `src/data/real-sites.json` + `src/assets/map/*.webp`. Do not hand-edit t
 - Report as PDF without the print dialog; share link; saving missions between visits.
 
 ## Commit attribution
-If you commit through Claude Code, follow the attribution lines in the session's system reminder.
+Commits are authored by the team member who made them; if an AI assistant helped, add a `Co-Authored-By:` line.

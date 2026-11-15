@@ -140,7 +140,7 @@ handoff/         JPL Horizons cross-check script
 docs/            product flow and developer notes
 ```
 
-More for contributors: [`docs/DEVELOPER.md`](docs/DEVELOPER.md) and [`CLAUDE.md`](CLAUDE.md).
+More for contributors: [`docs/DEVELOPER.md`](docs/DEVELOPER.md) and [`CONTRIBUTING.md`](CONTRIBUTING.md).
 
 ## The team
 
