@@ -1,9 +1,9 @@
 {
-  "name": "suhail-student-mode",
+  "name": "suhail",
   "private": true,
   "version": "0.1.0",
   "type": "module",
-  "description": "SUHAIL (سهيل) – Student / newcomer mode. NASA Space Apps Cairo 2026 · Lunar Landing Site Navigator · FASA Destination Team",
+  "description": "SUHAIL – Lunar Landing Site Navigator. NASA Space Apps Cairo 2026 · Lunar Landing Site Navigator · FASA Destination Team",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
