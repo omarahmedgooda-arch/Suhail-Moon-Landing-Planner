@@ -5,6 +5,7 @@ import terrain from '../data/terrain3d.json';
 import { mapLayer } from './RegionMedia.jsx';
 import { mapUrl } from '../assets/mapUrls.js';
 import { useReducedMotion } from '../hooks.js';
+import { useLang } from '../i18n.js';
 
 const DEG = Math.PI / 180;
 
@@ -32,6 +33,7 @@ export default function Terrain3D({ data, regionId, site, startHour = 0, hours =
   const host = useRef(null);
   const api = useRef({});
   const reduced = useReducedMotion();
+  const ar = useLang() === 'ar';
   const [hour, setHour] = useState(0);
   const [exag, setExag] = useState(3);
   const [layer, setLayer] = useState('natural');
@@ -136,20 +138,20 @@ export default function Terrain3D({ data, regionId, site, startHour = 0, hours =
     return () => clearInterval(id);
   }, [playing, hours, reduced]);
 
-  if (!T) return <p className="muted">No 3D terrain for this region.</p>;
+  if (!T) return <p className="muted">{ar ? 'لا توجد تضاريس ثلاثية الأبعاد لهذه المنطقة.' : 'No 3D terrain for this region.'}</p>;
   return (
     <div className="t3d">
-      <div ref={host} className="t3d-canvas" aria-label={`3D terrain of ${r.name}; drag to rotate, scroll to zoom`} role="img" />
+      <div ref={host} className="t3d-canvas" aria-label={ar ? `تضاريس ${r.name} ثلاثية الأبعاد؛ اسحب للتدوير ومرّر للتكبير` : `3D terrain of ${r.name}; drag to rotate, scroll to zoom`} role="img" />
       <div className="t3d-ctl">
-        <button type="button" className="btn btn-ghost btn-sm" aria-pressed={playing} onClick={() => setPlaying((p) => !p)}>{playing ? '❚❚ Pause' : '▶ Play the Sun'}</button>
-        <label className="range-label grow" htmlFor={`t3d-h-${regionId}`}>Mission hour <strong className="mono">{hour}</strong> · Sun az <span className="mono">{az.toFixed(1)}°</span> el <span className="mono">{el.toFixed(2)}°</span> · {lit ? 'site in sunlight' : 'site in shadow'}</label>
+        <button type="button" className="btn btn-ghost btn-sm" aria-pressed={playing} onClick={() => setPlaying((p) => !p)}>{playing ? (ar ? '❚❚ إيقاف مؤقت' : '❚❚ Pause') : (ar ? '▶ حرّك الشمس' : '▶ Play the Sun')}</button>
+        <label className="range-label grow" htmlFor={`t3d-h-${regionId}`}>{ar ? 'ساعة المهمة' : 'Mission hour'} <strong className="mono">{hour}</strong> · {ar ? 'اتجاه الشمس' : 'Sun az'} <span className="mono num">{az.toFixed(1)}°</span> {ar ? 'ارتفاعها' : 'el'} <span className="mono num">{el.toFixed(2)}°</span> · {lit ? (ar ? 'الموقع في الشمس' : 'site in sunlight') : (ar ? 'الموقع في الظل' : 'site in shadow')}</label>
         <input id={`t3d-h-${regionId}`} type="range" min="0" max={hours - 1} value={hour} onChange={(e) => { setPlaying(false); setHour(+e.target.value); }} />
-        <label className="numfield" htmlFor={`t3d-x-${regionId}`}><span>Vertical exaggeration ×{exag}</span><input id={`t3d-x-${regionId}`} type="range" min="1" max="8" step="0.5" value={exag} onChange={(e) => setExag(+e.target.value)} /></label>
-        <label className="numfield" htmlFor={`t3d-l-${regionId}`}><span>Surface colour</span>
-          <select id={`t3d-l-${regionId}`} value={layer} onChange={(e) => setLayer(e.target.value)}><option value="natural">Moon (natural)</option><option value="elev">Elevation colours</option><option value="slope">Slope colours</option><option value="grey">Plain regolith</option></select>
+        <label className="numfield" htmlFor={`t3d-x-${regionId}`}><span>{ar ? 'تضخيم الارتفاع' : 'Vertical exaggeration'} ×{exag}</span><input id={`t3d-x-${regionId}`} type="range" min="1" max="8" step="0.5" value={exag} onChange={(e) => setExag(+e.target.value)} /></label>
+        <label className="numfield" htmlFor={`t3d-l-${regionId}`}><span>{ar ? 'لون السطح' : 'Surface colour'}</span>
+          <select id={`t3d-l-${regionId}`} value={layer} onChange={(e) => setLayer(e.target.value)}><option value="natural">{ar ? 'القمر (طبيعي)' : 'Moon (natural)'}</option><option value="elev">{ar ? 'ألوان الارتفاع' : 'Elevation colours'}</option><option value="slope">{ar ? 'ألوان الميل' : 'Slope colours'}</option><option value="grey">{ar ? 'تربة رمادية' : 'Plain regolith'}</option></select>
         </label>
       </div>
-      <p className="muted small">NASA LOLA elevation (80 m/px resampled to 400 m for 3D), 80 × 80 km box, relief range {Math.round(T.zmin)} … {Math.round(T.zmax)} m. Lighting uses the Sun’s computed azimuth and elevation at this site, so the shadows you see are the shadows the mission would see. Drag to rotate, scroll to zoom.</p>
+      <p className="muted small">{ar ? `ارتفاعات NASA LOLA (80 م/بكسل، أُعيد تقسيمها إلى 400 م للعرض ثلاثي الأبعاد)، مربع 80 × 80 كم، ومدى التضاريس من ${Math.round(T.zmin)} إلى ${Math.round(T.zmax)} م. الإضاءة تتبع اتجاه الشمس وارتفاعها المحسوبين لهذا الموقع، فالظلال التي تراها هي ظلال المهمة نفسها. اسحب للتدوير ومرّر للتكبير.` : `NASA LOLA elevation (80 m/px resampled to 400 m for 3D), 80 × 80 km box, relief range ${Math.round(T.zmin)} … ${Math.round(T.zmax)} m. Lighting uses the Sun’s computed azimuth and elevation at this site, so the shadows you see are the shadows the mission would see. Drag to rotate, scroll to zoom.`}</p>
     </div>
   );
 }

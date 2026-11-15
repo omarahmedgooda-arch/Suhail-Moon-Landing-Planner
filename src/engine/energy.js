@@ -55,10 +55,10 @@ export const SUITABILITY_RULES = {
 };
 
 export const SUITABILITY = {
-  high: { label: 'Highly suitable', status: 'go', text: 'Solar generation and battery storage carry every essential load through the whole mission with a comfortable reserve.' },
-  constrained: { label: 'Suitable with constraints', status: 'marginal', text: 'Feasible, but the reserve is thin: plan for more battery, lower loads or better array pointing.' },
-  risk: { label: 'High energy risk', status: 'nogo', text: 'The battery runs down to its depth-of-discharge floor during at least one dark period; some loads would go unpowered.' },
-  infeasible: { label: 'Not feasible', status: 'nogo', text: 'The modelled array and battery cannot meet the essential loads for this mission.' },
+  high: { label: 'Highly suitable', label_ar: 'مناسب جدًا', text_ar: 'توليد الطاقة الشمسية مع تخزين البطارية يغطيان كل الأحمال الأساسية طوال المهمة مع احتياطي مريح.', status: 'go', text: 'Solar generation and battery storage carry every essential load through the whole mission with a comfortable reserve.' },
+  constrained: { label: 'Suitable with constraints', label_ar: 'مناسب بشروط', text_ar: 'ممكن، لكن الاحتياطي ضيق: خطّط لبطارية أكبر، أو أحمال أقل، أو توجيه أفضل للألواح.', status: 'marginal', text: 'Feasible, but the reserve is thin: plan for more battery, lower loads or better array pointing.' },
+  risk: { label: 'High energy risk', label_ar: 'خطر طاقة مرتفع', text_ar: 'تنخفض البطارية إلى حد التفريغ الأدنى خلال فترة ظلام واحدة على الأقل، فتبقى بعض الأحمال بلا طاقة.', status: 'nogo', text: 'The battery runs down to its depth-of-discharge floor during at least one dark period; some loads would go unpowered.' },
+  infeasible: { label: 'Not feasible', label_ar: 'غير ممكن', text_ar: 'لا تستطيع الألواح والبطارية في هذا النموذج تلبية الأحمال الأساسية لهذه المهمة.', status: 'nogo', text: 'The modelled array and battery cannot meet the essential loads for this mission.' },
 };
 
 export function powerPreset(typeId) {

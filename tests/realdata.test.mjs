@@ -185,3 +185,20 @@ test('leader answers the user vote with numbers that match the data', () => {
     for (const u of v.used) assert.ok(v.text.includes(fmtNum(u)), `"${fmtNum(u)}" not in "${v.text}"`);
   }
 });
+
+test('Arabic expert council and leader: every number comes from the data, all mission types and votes', async () => {
+  const { simulateEnergy } = await import('../src/engine/energy.js');
+  for (const id of ['science-rover', 'ice-drill', 'comms-relay', 'night-survival', 'fast-demo', 'crew-outpost']) {
+    const m = preset(id);
+    const r = planMission(data, m);
+    const sims = r.places.map((p) => simulateEnergy(p.site, p.day * 24, m.durationDays * 24, m.power, data.window.start_utc));
+    const lines = [mapIntro(r, 'expert', 'ar').line];
+    r.places.forEach((p, i) => lines.push(...placeScript(p, { index: i, total: r.places.length, data, mission: m, mode: 'expert', energy: sims[i], lang: 'ar' })));
+    for (const vote of [undefined, null, r.places[0].region, r.places[r.places.length - 1].region]) lines.push(...leaderScript(r, { data, mode: 'expert', energy: sims[0], vote, lang: 'ar' }));
+    for (const l of lines) {
+      assert.ok(l.text && !/undefined|NaN|\[object/.test(l.text), `bad text: ${l.text}`);
+      assert.ok(/[؀-ۿ]/.test(l.text), `not Arabic: ${l.text}`);
+      for (const u of l.used) assert.ok(l.text.includes(fmtNum(u)), `"${fmtNum(u)}" not in "${l.text}"`);
+    }
+  }
+});

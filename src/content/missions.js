@@ -8,6 +8,7 @@ import { batteryForHours, powerPreset } from '../engine/energy.js';
 export const MISSIONS = [
   {
     id: 'fast-demo',
+    name_ar: 'مركبة عرض سريعة', blurb_ar: 'مركبة صغيرة كل مهمتها إثبات أن الهبوط ينجح، وإرسال تحية للأرض، والتقاط صور.',
     name: 'Fast demo lander',
     icon: 'bolt',
     blurb: 'A small lander that just has to prove the landing works, say hello to Earth, and take photos.',
@@ -18,6 +19,7 @@ export const MISSIONS = [
   },
   {
     id: 'science-rover',
+    name_ar: 'مركبة علمية', blurb_ar: 'مركبة جوّالة تتجه إلى حافة فوهة مظللة دائمًا وتجمع عينات قد تحتوي على جليد.',
     name: 'Science rover',
     icon: 'rover',
     blurb: 'A rover that drives to the edge of a permanently shadowed crater and scoops up samples that may contain ice.',
@@ -29,6 +31,7 @@ export const MISSIONS = [
   },
   {
     id: 'crew-outpost',
+    name_ar: 'قاعدة مأهولة', blurb_ar: 'هبوط لإقامة أطول. الطاقة والأرض المستوية وفترة شمس طويلة أهم من أي شيء.',
     name: 'Crew outpost',
     icon: 'outpost',
     blurb: 'A landing for a longer stay. Power, flat ground and a strong sunny stretch matter more than anything else.',
@@ -39,6 +42,7 @@ export const MISSIONS = [
   },
   {
     id: 'ice-drill',
+    name_ar: 'حفر الجليد (ISRU)', blurb_ar: 'مثقاب ثابت يحفر في التربة الباردة بجوار فوهة مظللة لاختبار وجود جليد الماء.',
     name: 'Ice drilling (ISRU)',
     icon: 'drill',
     blurb: 'A stationary drill that digs into the cold soil next to a shadowed crater to test for water ice.',
@@ -49,6 +53,7 @@ export const MISSIONS = [
   },
   {
     id: 'comms-relay',
+    name_ar: 'محطة ترحيل لاسلكي', blurb_ar: 'محطة صغيرة على حافة مرتفعة تبقي الاتصال مفتوحًا بين الأرض والمركبات الأخرى.',
     name: 'Radio relay station',
     icon: 'relay',
     blurb: 'A small station on a high rim that keeps a radio link open between Earth and other landers.',
@@ -59,6 +64,7 @@ export const MISSIONS = [
   },
   {
     id: 'night-survival',
+    name_ar: 'اختبار الصمود في الليل', blurb_ar: 'اختبار تقني يجب أن يجتاز أطول فترة ظلام في الموسم بالبطارية والمدفئات.',
     name: 'Night-survival test',
     icon: 'moonnight',
     blurb: 'A technology test that must ride out the longest dark spell of the season on its battery and heaters.',
@@ -69,6 +75,7 @@ export const MISSIONS = [
   },
   {
     id: 'geology',
+    name_ar: 'رحلة جيولوجية', blurb_ar: 'مركبة تعبر حواف فوهات قديمة لجمع عينات صخرية، لذا يجب أن تكون الأرض آمنة للقيادة.',
     name: 'Geology traverse',
     icon: 'rock',
     blurb: 'A rover that drives across old crater rims collecting rock samples, so the ground must be safe to drive.',
@@ -79,6 +86,7 @@ export const MISSIONS = [
   },
   {
     id: 'observatory',
+    name_ar: 'محطة علمية قطبية', blurb_ar: 'محطة طويلة العمر بأجهزة تحتاج طاقة ثابتة واتصالًا ثابتًا بالأرض.',
     name: 'Polar science station',
     icon: 'dish',
     blurb: 'A long-lived station with instruments that need steady power and a steady data link to Earth.',
@@ -91,7 +99,7 @@ export const MISSIONS = [
 
 export const CUSTOM_MISSION = {
   id: 'custom',
-  name: 'Build your own',
+  name: 'Build your own', name_ar: 'صمّم مهمتك', blurb_ar: 'حدّد حدودك لكل جانب وشاهد كيف تتغير الإجابة.',
   icon: 'custom',
   blurb: 'Set your own limits for each aspect and see how the answer changes.',
   needs: [],
@@ -101,10 +109,10 @@ export const CUSTOM_MISSION = {
 };
 
 export const LEVEL_WORDS = {
-  off: { label: 'Off', plain: "Doesn't matter" },
-  low: { label: 'Low', plain: 'Nice to have' },
-  medium: { label: 'Medium', plain: 'Important' },
-  high: { label: 'High', plain: 'Critical' },
+  off: { label: 'Off', plain: "Doesn't matter", label_ar: 'متوقف', plain_ar: 'غير مهم' },
+  low: { label: 'Low', plain: 'Nice to have', label_ar: 'منخفض', plain_ar: 'مستحب' },
+  medium: { label: 'Medium', plain: 'Important', label_ar: 'متوسط', plain_ar: 'مهم' },
+  high: { label: 'High', plain: 'Critical', label_ar: 'مرتفع', plain_ar: 'حاسم' },
 };
 
 export const ASPECT_LABEL = {
@@ -114,6 +122,13 @@ export const ASPECT_LABEL = {
   terrain: 'Terrain slope',
   science: 'Scientific target proximity',
 };
+export const ASPECT_LABEL_AR = {
+  sunlight: 'الإشعاع الشمسي',
+  night: 'البيئة الحرارية ودورة الليل والنهار',
+  comms: 'الاتصال بالأرض',
+  terrain: 'ميل التضاريس',
+  science: 'القرب من الهدف العلمي',
+};
 /** Short labels for tight spots (tables, chips). */
 export const ASPECT_SHORT = {
   sunlight: 'Solar',
@@ -121,6 +136,20 @@ export const ASPECT_SHORT = {
   comms: 'Comms',
   terrain: 'Slope',
   science: 'Science',
+};
+export const ASPECT_SHORT_AR = {
+  sunlight: 'الشمس',
+  night: 'الحرارة',
+  comms: 'الاتصال',
+  terrain: 'الميل',
+  science: 'العلوم',
+};
+export const ASPECT_HINT_AR = {
+  sunlight: 'نسبة ساعات المهمة التي تكون فيها الشمس فوق أفق التضاريس المحلي (وهي ما يحدد إنتاج الألواح).',
+  night: 'يجب أن تكون أطول فترة ظلام متواصل أقصر من مدة تحمّل البطارية مع أحمال الليل.',
+  comms: 'استمرار الاتصال اللاسلكي بالأرض: نسبة الساعات التي تكون فيها الأرض فوق الأفق، وأطول فترة انقطاع.',
+  terrain: 'قيد الميل: أقصى ميل مقبول للسطح لهبوط آمن.',
+  science: 'أقصى مسافة إلى هدف علمي قيّم (أقرب منطقة مظللة دائمًا، كمؤشر على جليد الماء).',
 };
 /** One-line explanation shown under each aspect in the forms. */
 export const ASPECT_HINT = {
@@ -133,15 +162,15 @@ export const ASPECT_HINT = {
 
 /** Mission types offered by the Expert form. Choosing one fills the form with that preset's numbers. */
 export const MISSION_TYPES = [
-  { id: 'science-rover', label: 'Science rover / ice prospecting' },
-  { id: 'ice-drill', label: 'ISRU: ice drilling & extraction test' },
-  { id: 'geology', label: 'Geology traverse & sampling' },
-  { id: 'observatory', label: 'Long-duration polar science station' },
-  { id: 'comms-relay', label: 'Communications relay station' },
-  { id: 'night-survival', label: 'Night-survival technology demo' },
-  { id: 'fast-demo', label: 'Short technology demo lander' },
-  { id: 'crew-outpost', label: 'Crewed landing / surface outpost' },
-  { id: 'custom', label: 'Other (set everything yourself)' },
+  { id: 'science-rover', label_ar: 'مركبة علمية / تنقيب عن الجليد', label: 'Science rover / ice prospecting' },
+  { id: 'ice-drill', label_ar: 'استخدام الموارد: اختبار حفر الجليد واستخلاصه', label: 'ISRU: ice drilling & extraction test' },
+  { id: 'geology', label_ar: 'رحلة جيولوجية وجمع عينات', label: 'Geology traverse & sampling' },
+  { id: 'observatory', label_ar: 'محطة علمية قطبية طويلة الأمد', label: 'Long-duration polar science station' },
+  { id: 'comms-relay', label_ar: 'محطة ترحيل اتصالات', label: 'Communications relay station' },
+  { id: 'night-survival', label_ar: 'عرض تقني للصمود في الليل', label: 'Night-survival technology demo' },
+  { id: 'fast-demo', label_ar: 'مركبة عرض تقني قصيرة', label: 'Short technology demo lander' },
+  { id: 'crew-outpost', label_ar: 'هبوط مأهول / قاعدة سطحية', label: 'Crewed landing / surface outpost' },
+  { id: 'custom', label_ar: 'أخرى (حدّد كل شيء بنفسك)', label: 'Other (set everything yourself)' },
 ];
 
 export const METRIC_BY_ASPECT = { sunlight: ['sunPct'], comms: ['earthPct', 'earthGapH'], terrain: ['slopeDeg'], science: ['psrKm'] };

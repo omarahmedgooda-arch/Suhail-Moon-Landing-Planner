@@ -16,6 +16,13 @@ export const fmtRange = (data, day, days) => {
   const f = (d, y) => d.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', ...(y ? { year: 'numeric' } : {}), timeZone: 'UTC' });
   return `${f(a, a.getUTCFullYear() !== b.getUTCFullYear())} → ${f(b, true)}`;
 };
+const fAr = (d, y = true) => d.toLocaleDateString('ar-EG-u-nu-latn', { day: 'numeric', month: 'long', ...(y ? { year: 'numeric' } : {}), timeZone: 'UTC' });
+/** Arabic dates with Western digits, e.g. «13 سبتمبر 2027». */
+export const fmtDayAr = (data, day) => fAr(dayDate(data, day));
+export const fmtRangeAr = (data, day, days) => {
+  const a = dayDate(data, day), b = dayDate(data, day + days);
+  return `${fAr(a, a.getUTCFullYear() !== b.getUTCFullYear())} إلى ${fAr(b)}`;
+};
 export const windowDays = (data) => Math.round(data.window.hours / 24);
 export const windowEndDay = (data) => windowDays(data) - 1;
 /** yyyy-mm-dd (UTC) <-> day index inside the data window. */

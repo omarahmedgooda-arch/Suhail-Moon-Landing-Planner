@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { mapUrl } from '../assets/mapUrls.js';
 import { useReducedMotion } from '../hooks.js';
+import { useLang } from '../i18n.js';
 
 /* South-pole polar stereographic maps. x_km / y_km are map coordinates from the pipeline
    (pole at 0,0; up on the map = toward 0° longitude). Hillshade from NASA LOLA (80 m per pixel). */
@@ -92,6 +93,7 @@ export function PoleMap({ data, places = [], focus = null, selected = null, onSe
 
 /** Close-up of one region: hillshade crop, region outline, every candidate site, the chosen one highlighted. */
 export function RegionMap({ data, regionId, siteId }) {
+  const ar = useLang() === 'ar';
   const reg = data.map.regions.find((r) => r.id === regionId);
   const sites = data.sites.filter((s) => s.region === regionId);
   const [cx, cy] = reg.crop.center_km, size = reg.crop.size_km;
@@ -109,13 +111,13 @@ export function RegionMap({ data, regionId, siteId }) {
           <g transform={`translate(${X(chosen.x_km)} ${Y(chosen.y_km)})`}>
             <circle r="26" fill="none" stroke="var(--cream)" strokeWidth="3" className="pulse-ring" />
             <circle r="9" fill="var(--cream)" stroke="var(--ink)" strokeWidth="3" />
-            <text y="-34" textAnchor="middle" fontFamily="var(--font-body)" fontWeight="700" fontSize="22" fill="var(--cream)" stroke="var(--ink)" strokeWidth="6" paintOrder="stroke" strokeLinejoin="round">here</text>
+            <text y="-34" textAnchor="middle" fontFamily="var(--font-body)" fontWeight="700" fontSize="22" fill="var(--cream)" stroke="var(--ink)" strokeWidth="6" paintOrder="stroke" strokeLinejoin="round">{ar ? 'هنا' : 'here'}</text>
           </g>
         )}
         <g transform="translate(24 770)"><path d={`M0 0H${10 * P}`} stroke="var(--cream)" strokeWidth="4" /><path d={`M0 -7V7M${10 * P} -7V7`} stroke="var(--cream)" strokeWidth="3" /><text x={10 * P + 10} y="6" fontFamily="var(--font-mono)" fontSize="18" fill="var(--cream)" stroke="var(--ink)" strokeWidth="5" paintOrder="stroke">10 km</text></g>
         <g transform="translate(760 40)" fill="var(--cream)" fontFamily="var(--font-mono)" fontSize="16"><path d="M0 24V-4M-6 4l6-8 6 8" stroke="var(--cream)" strokeWidth="3" fill="none" strokeLinecap="round" strokeLinejoin="round" /><text x="-16" y="46" stroke="var(--ink)" strokeWidth="4" paintOrder="stroke">0°E</text></g>
       </svg>
-      <figcaption className="map-cap">Shaded relief from NASA LOLA elevation data. Up is toward 0° longitude (polar view).</figcaption>
+      <figcaption className="map-cap">{ar ? 'تضاريس مظللة من بيانات الارتفاع NASA LOLA. الأعلى باتجاه خط الطول 0° (منظر قطبي).' : 'Shaded relief from NASA LOLA elevation data. Up is toward 0° longitude (polar view).'}</figcaption>
     </figure>
   );
 }

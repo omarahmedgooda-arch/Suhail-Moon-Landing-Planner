@@ -15,7 +15,19 @@ const plain = (t) => String(t).replace(/\*\*(.+?)\*\*/g, '$1').replace(/\{\{[a-z
 const WORD = { go: 'Go', marginal: 'Marginal', nogo: 'No-Go', unknown: 'Unverified', off: 'Off' };
 const siteLabel = (p) => `${p.regionName}, site ${p.site.name.split('·')[1]?.trim()}`;
 
-export function requirementRows(mission) {
+export function requirementRows(mission, lang = 'en') {
+  if (lang === 'ar') {
+    const lv = (a) => LEVEL_WORDS[mission.levels[a]].label_ar;
+    const L = mission.limits ?? {};
+    const off = (a) => mission.levels[a] === 'off';
+    return [
+      ['الشمس', lv('sunlight'), off('sunlight') ? '—' : `الشمس ظاهرة ${L.sunPct ?? '?'}% على الأقل من المهمة`],
+      ['الليل والبرد', lv('night'), off('night') ? '—' : `أطول ظلام أقل من تحمّل البطارية (${mission.batteryH} ساعة)`],
+      ['الاتصال', lv('comms'), off('comms') ? '—' : `الأرض ظاهرة ${L.earthPct ?? '?'}% على الأقل، وأطول انقطاع ${L.earthGapH ?? '?'} ساعة على الأكثر`],
+      ['الأرض', lv('terrain'), off('terrain') ? '—' : `ميل ${L.slopeDeg ?? '?'}° على الأكثر`],
+      ['العلوم', lv('science'), off('science') ? '—' : `على بعد ${L.psrKm ?? '?'} كم أو أقل من منطقة مظللة دائمًا`],
+    ];
+  }
   const rows = [];
   const lv = (a) => LEVEL_WORDS[mission.levels[a]].label;
   const L = mission.limits ?? {};

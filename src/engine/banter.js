@@ -5,9 +5,9 @@
 import { ORDER } from '../content/characters.js';
 import { castFor } from '../content/cast.js';
 import { SUITABILITY } from './energy.js';
-import { ASPECT_LABEL } from '../content/missions.js';
+import { ASPECT_LABEL, ASPECT_LABEL_AR } from '../content/missions.js';
 import { MOOD, speak, speakExpert } from './dialogue.js';
-import { fmtDay, fmtRange, relaxHints } from './plan.js';
+import { fmtDay, fmtDayAr, fmtRange, fmtRangeAr, relaxHints } from './plan.js';
 import { METRIC_UNIT } from './rules.js';
 
 const n = (x) => (Number.isInteger(x) ? String(x) : (Math.round(x * 10) / 10).toString());
@@ -107,7 +107,8 @@ export function metricText(m) {
 const line = (key, speaker, who, mood, text, used = [], status = null) => ({ key, speaker, name: who.name, role: who.role, mood, status, text, used });
 
 /** The whole conversation for one place: guide intro, five characters, cross-talk, guide close. */
-export function placeScript(place, { index, total, data, mission, mode = 'student', energy = null }) {
+export function placeScript(place, { index, total, data, mission, mode = 'student', energy = null, lang = 'en' }) {
+  if (lang === 'ar' && mode === 'expert') return placeScriptAr(place, { index, total, data, mission, energy });
   const cast = castFor(mode);
   const CHARACTERS = cast.members, GUIDE = cast.guide;
   const X = mode === 'expert';
@@ -163,11 +164,17 @@ export function placeScript(place, { index, total, data, mission, mode = 'studen
 }
 
 /** Guide line shown when the map first appears. */
-export function mapIntro(result, mode = 'student') {
+export function mapIntro(result, mode = 'student', lang = 'en') {
   const GUIDE = castFor(mode).guide;
   const shown = result.places.length;
   const ok = result.places.filter((p) => p.ev.eligible).length;
   const used = [shown];
+  if (lang === 'ar') {
+    let text = `بناءً على متطلباتك، هذه أفضل **${shown}** مواقع لمهمتك. لنمرّ عليها واحدًا تلو الآخر.`;
+    if (ok === 0) text = `فحصت كل المواقع المرشحة مقابل متطلباتك، و**لا يوجد** موقع يجتاز كل القواعد. هذه أقرب **${shown}** مواقع إلى النجاح. لنرَ أين يقصّر كل منها.`;
+    else if (ok < shown) { used.push(ok); text = `بناءً على متطلباتك، هذه أفضل **${shown}** مواقع. **${ok}** منها تجتاز كل القواعد، والباقي هي الأقرب إلى النجاح. لنمرّ عليها واحدًا تلو الآخر.`; }
+    return { text, used, line: lineAr('map-intro', 'guide', GUIDE, 'happy', text, used) };
+  }
   let text = `After seeing your requirements, these are the best **${shown}** places for your trip. Let’s go and look at each one.`;
   if (ok === 0) text = `I searched every candidate site against your requirements and **none** passes every rule. These are the **${shown}** nearest misses. Let’s see where each one falls short.`;
   else if (ok < shown) { used.push(ok); text = `After seeing your requirements, here are the best **${shown}** places. **${ok}** of them pass every rule; the rest are the nearest misses. Let’s look at each one.`; }
@@ -175,7 +182,8 @@ export function mapIntro(result, mode = 'student') {
 }
 
 /** The Leader: quick comparison, the verdict and why, the date, the watch-outs. */
-export function leaderScript(result, { data, replan = null, mode = 'student', energy = null, vote = undefined }) {
+export function leaderScript(result, { data, replan = null, mode = 'student', energy = null, vote = undefined, lang = 'en' }) {
+  if (lang === 'ar' && mode === 'expert') return leaderScriptAr(result, { data, replan, energy, vote });
   const cast = castFor(mode);
   const LEADER = cast.leader;
   const { places, winner, mission } = result;
@@ -305,6 +313,248 @@ export function leaderScript(result, { data, replan = null, mode = 'student', en
     else if (replan.recommendation === 'shift') txt = `About your old plan at **${oldName}**: on the old date it breaks a rule under the new requirements, but the same site works on **${fmtDay(data, replan.shiftTo.day)}**. A new date can save the plan.`;
     else txt = `About your old plan at **${oldName}**: under the new requirements it breaks a rule on every possible date. It is time to move to a new place.`;
     lines.push(line('l-replan', 'leader', LEADER, replan.recommendation === 'keep' ? 'happy' : 'thinking', txt, [...used]));
+    used.length = 0;
+  }
+  return lines;
+}
+
+/* ===================================================================== Arabic (Expert council) */
+// Written as natural Modern Standard Arabic, not a word-for-word translation. Same numbers, same `used`.
+
+const iso = (x) => `\u2068${x}\u2069`;
+const lineAr = (key, speaker, who, mood, text, used = [], status = null) => ({ key, speaker, name: who.name_ar ?? who.name, role: who.role_ar ?? who.role, mood, status, text, used });
+const LBL = (a) => ASPECT_LABEL_AR[a];
+const siteNo = (p) => p.site.name.split('·')[1]?.trim() ?? '';
+const coordAr = (s) => `${Math.abs(s.lat_deg).toFixed(2)}° ${s.lat_deg < 0 ? 'جنوبًا' : 'شمالًا'}، ${s.lon_deg.toFixed(2)}° شرقًا`;
+const UNIT_AR = { sunPct: '%', maxDarkH: ' ساعة', earthPct: '%', earthGapH: ' ساعة', slopeDeg: '°', psrKm: ' كم' };
+const unitAr = (key) => UNIT_AR[key] ?? METRIC_UNIT[key];
+const verdictPhraseAr = (v) => ({ go: 'خيار قوي', risky: 'ممكن، لكن الهوامش ضيقة', nogo: 'يخالف قاعدة واحدة على الأقل من قواعدك' }[v]);
+
+const X_CHEER_AR = {
+  sunlight: 'ميزانية الطاقة موجبة وبهامش جيد.',
+  night: 'الغلاف الحراري صامد.',
+  comms: 'ميزانية الاتصال سليمة.',
+  terrain: 'منطقة الهبوط مستوية.',
+  science: 'الهدف في المتناول.',
+};
+const X_GRUMBLE_AR = {
+  sunlight: 'الألواح لا تستطيع مجاراة الحمل.',
+  night: 'البطارية لا تصمد خلال أطول فترة ظلام.',
+  comms: 'نفقد الأرض مدة أطول مما تسمح به الإجراءات.',
+  terrain: 'الميل خارج حدود الهبوط الآمن.',
+  science: 'الهدف العلمي بعيد عن متناولنا.',
+};
+const X_NERVOUS_AR = {
+  sunlight: 'هامش الطاقة ضيق.',
+  night: 'هامش التحمّل ضيق.',
+  comms: 'فترات الانقطاع قريبة من الحد.',
+  terrain: 'الميل قريب من الحد.',
+  science: 'الرحلة إلى الهدف طويلة.',
+};
+
+function reactionAr(prev, cur, ev, C) {
+  const p = ev.aspects[prev].status, c = ev.aspects[cur].status;
+  const pn = C[prev].name_ar ?? C[prev].name;
+  const good = (st) => st === 'go';
+  const bad = (st) => st === 'nogo' || st === 'unknown';
+  if (c === 'off') return '';
+  if (good(p) && good(c)) return `أتفق مع ${pn}. `;
+  if (good(p) && bad(c)) return `يا ${pn}، أرقامك جيدة، لكن أرقامي ليست كذلك. `;
+  if (bad(p) && good(c)) return `عند ${pn} مشكلة حقيقية. أما من جهتي: `;
+  if (bad(p) && bad(c)) return `والأمر يزداد سوءًا يا ${pn}. `;
+  if (p === 'marginal' && good(c)) return `ملاحظة مسجلة يا ${pn}. أرقامي أوضح. `;
+  if (c === 'marginal') return `أشاركك الحذر يا ${pn}. `;
+  return `بناءً على ما قاله ${pn}: `;
+}
+
+function factAr(aspect, a, take) {
+  const m = a.metrics;
+  switch (aspect) {
+    case 'sunlight': return `الشمس ظاهرة **${take(m[0].value)}%** من زمن المهمة`;
+    case 'night': return m[0].value === 0 ? `لا يحلّ الظلام طوال المهمة (**${take(0)} ساعة** بلا شمس)` : `أطول فترة ظلام **${take(m[0].value)} ساعة**`;
+    case 'comms': return `الأرض ظاهرة **${take(m[0].value)}%** من الوقت، وأطول انقطاع ${take(m[1].value)} ساعة`;
+    case 'terrain': return `ميل الأرض **${take(m[0].value)}°**`;
+    default: return `أقرب فوهة مظللة على بعد **${take(m[0].value)} كم**`;
+  }
+}
+
+function placeScriptAr(place, { index, total, data, mission, energy }) {
+  const cast = castFor('expert');
+  const C = cast.members, GUIDE = cast.guide;
+  const ev = place.ev;
+  const days = mission.durationDays;
+  const lines = [];
+  const first = index === 0, last = index === total - 1;
+  const intro = first ? 'المحطة الأولى' : last ? 'المحطة الأخيرة' : `المحطة ${index + 1} من ${total}`;
+  lines.push(lineAr('guide-intro', 'guide', GUIDE, 'happy',
+    `${intro}: **${iso(place.regionName)}**، الموقع ${siteNo(place)}. أفضل يوم لبدء مهمتك التي تستمر ${days} يومًا هنا هو **${fmtDayAr(data, place.day)}**. لنسمع رأي المجلس.`));
+
+  let prev = null;
+  for (const a of ORDER) {
+    const sp = speakExpert(a, ev, { scope: 'window', days, energy, lang: 'ar' });
+    const text = prev ? `${reactionAr(prev, a, ev, C)}${sp.line}` : sp.line;
+    lines.push(lineAr(`ch-${a}`, a, C[a], sp.mood, text, sp.used, sp.status));
+    if (ev.aspects[a].status !== 'off') prev = a;
+  }
+
+  const active = ORDER.filter((a) => ACTIVE_STATUS.includes(ev.aspects[a].status));
+  const ranked = [...active].sort((a, b) => ev.aspects[b].score - ev.aspects[a].score);
+  const best = ranked[0], worst = ranked[ranked.length - 1];
+  if (active.length >= 2) {
+    const bs = ev.aspects[best].status, ws = ev.aspects[worst].status;
+    const bn = C[best].name_ar ?? C[best].name, wn = C[worst].name_ar ?? C[worst].name;
+    if (bs === 'go' && (ws === 'nogo' || ws === 'unknown')) {
+      lines.push(lineAr('talk-1', best, C[best], 'happy', `يا ${wn}، من جهتي ${X_CHEER_AR[best]} هل يمكننا تخفيف مشكلتك؟`));
+      lines.push(lineAr('talk-2', worst, C[worst], MOOD[ws], `يا ${bn}، الرقم الجيد عندك لا يغيّر رقمي: ${X_GRUMBLE_AR[worst]} هذا قيد صارم، وليس تفضيلًا.`));
+    } else if (bs === 'go' && ws === 'marginal') {
+      lines.push(lineAr('talk-1', best, C[best], 'happy', `يا ${wn}، تبدو قلقًا. من جهتي ${X_CHEER_AR[best]}`));
+      lines.push(lineAr('talk-2', worst, C[worst], 'nervous', `متفق معك فيما يخصك يا ${bn}. لكن ${X_NERVOUS_AR[worst]} وأريد تسجيل ذلك في سجل المخاطر.`));
+    } else if (ws === 'go') {
+      lines.push(lineAr('talk-1', 'guide', GUIDE, 'happy', 'كل المتخصصين يقولون إن الوضع طبيعي. عند القطب الجنوبي هذا نادر، فلنسجّله.'));
+    } else {
+      lines.push(lineAr('talk-1', best, C[best], MOOD[bs], `يا ${wn}، لديّ تحفظات أنا أيضًا: ${bs === 'marginal' ? X_NERVOUS_AR[best] : X_GRUMBLE_AR[best]}`));
+      lines.push(lineAr('talk-2', worst, C[worst], MOOD[ws], `إذن نحن متفقان يا ${bn}. لن أوصي بهذا الموقع لمدير الرحلة.`));
+    }
+  }
+
+  const score = Math.round(ev.overall);
+  lines.push(lineAr('guide-close', 'guide', GUIDE, ev.verdict === 'go' ? 'happy' : ev.verdict === 'risky' ? 'nervous' : 'worried',
+    `${iso(place.regionName)} باختصار: ${verdictPhraseAr(ev.verdict)}. الدرجة الإجمالية **${score}/100**.${energy ? ` نموذج الطاقة: ${SUITABILITY[energy.rating].label_ar}.` : ''}`, [score]));
+  return lines;
+}
+
+function leaderScriptAr(result, { data, replan, energy, vote }) {
+  const cast = castFor('expert');
+  const LEADER = cast.leader;
+  const C = cast.members;
+  const nm = (a) => C[a].name_ar ?? C[a].name;
+  const { places, winner, mission } = result;
+  const lines = [];
+  if (!winner) return [lineAr('l-none', 'leader', LEADER, 'thinking', 'لم أجد أي موقع مرشح في البيانات. راجع نطاق التواريخ وحاول مرة أخرى.')];
+  const ev = winner.ev;
+  const days = mission.durationDays;
+  const used = [];
+  const take = (x) => { used.push(x); return n(x); };
+
+  const list = places.map((p, i) => `${iso(`${i + 1}. ${p.regionName} (**${take(Math.round(p.ev.overall))}**)`)}`).join('، ');
+  const u0 = [...used]; used.length = 0;
+  lines.push(lineAr('l-compare', 'leader', LEADER, 'thinking',
+    `استمعت إلى المجلس في كل المواقع الـ**${places.length}**. ترتيبها حسب الدرجة الإجمالية من 100: ${list}.`, [places.length, ...u0]));
+
+  {
+    const act = ORDER.filter((a) => ACTIVE_STATUS.includes(ev.aspects[a].status));
+    if (act.length >= 2) {
+      const sorted = [...act].sort((a, b) => ev.aspects[b].score - ev.aspects[a].score);
+      const top = nm(sorted[0]), low = sorted[sorted.length - 1];
+      const txt = ev.aspects[low].status === 'go'
+        ? `في ${iso(winner.regionName)} كان المجلس كله موافقًا، حتى ${nm(low)}، وهو الأصعب إرضاءً، لم يعترض.`
+        : `في ${iso(winner.regionName)} كان ${top} الأكثر ثقة، وأبدى ${nm(low)} أقوى تحفظ، وكان بشأن ${LBL(low)}. وقد وازنت بين الرأيين.`;
+      lines.push(lineAr('l-council', 'leader', LEADER, 'thinking', txt, []));
+    }
+  }
+
+  if (ev.eligible) {
+    const active = ORDER.filter((a) => ACTIVE_STATUS.includes(ev.aspects[a].status));
+    const top2 = [...active].sort((a, b) => ev.aspects[b].score - ev.aspects[a].score).slice(0, 2);
+    const why = top2.map((a) => factAr(a, ev.aspects[a], take)).join('، كما أن ');
+    const u1 = [...used]; used.length = 0;
+    lines.push(lineAr('l-verdict', 'leader', LEADER, 'happy',
+      `نصيحتي: اهبطوا في **${iso(winner.regionName)}**، الموقع **${siteNo(winner)}** عند ${coordAr(winner.site)} (${ev.verdict === 'go' ? 'مناسب للهبوط' : 'ممكن بحذر'}). والأسباب: ${why}.`, u1, ev.verdict));
+
+    const second = places[1];
+    if (second) {
+      let bestA = null, bestD = -1;
+      for (const a of active) {
+        const d = ev.aspects[a].score - (second.ev.aspects[a]?.score ?? 0);
+        if (d > bestD) { bestD = d; bestA = a; }
+      }
+      const m1 = ev.aspects[bestA].metrics[0], m2 = second.ev.aspects[bestA].metrics[0];
+      const gap = Math.round(ev.overall) - Math.round(second.ev.overall);
+      const sc = (x) => { used.push(x); return n(x); };
+      const lead = gap > 0
+        ? `يتفوق على ${iso(second.regionName)} بفارق **${sc(gap)}** ${gap === 1 ? 'نقطة' : gap === 2 ? 'نقطتين' : gap <= 10 ? 'نقاط' : 'نقطة'}.`
+        : `يتعادل مع ${iso(second.regionName)} في الدرجة، ويفوز بالترجيح لأن أضعف جوانبه أقوى.`;
+      const txt = `${lead} الفرق الأكبر في ${LBL(bestA)}: **${sc(m1.value)}${unitAr(m1.key)}** هنا مقابل ${sc(m2.value)}${unitAr(m2.key)} هناك.`;
+      lines.push(lineAr('l-second', 'leader', LEADER, 'thinking', txt, [...used]));
+      used.length = 0;
+
+      if (ev.verdict === 'risky') {
+        const safer = places.slice(1).find((p) => p.ev.verdict === 'go');
+        if (safer) {
+          const thin = active.filter((a) => ev.aspects[a].status === 'marginal').map(LBL);
+          const sTxt = `ملاحظة بصراحة: درجة ${iso(winner.regionName)} أعلى، لكن هامشه ضيق في ${thin.join(' و')}. أما ${iso(safer.regionName)} فيجتاز كل الجوانب بهامش مريح (**${sc(Math.round(safer.ev.overall))}**/100). إن كان هامش الأمان أهم عندك من النقاط الأخيرة، فاختر ${iso(safer.regionName)}.`;
+          lines.push(lineAr('l-safer', 'leader', LEADER, 'thinking', sTxt, [...used]));
+          used.length = 0;
+        }
+      }
+    }
+
+    const f = winner.flex;
+    const sc = (x) => { used.push(x); return n(x); };
+    const room = f.eligibleDays >= 5 ? 'فلديك مرونة في التأجيل' : f.eligibleDays > 1 ? 'فالجدول لا يحتمل تأجيلًا كبيرًا' : 'فالموعد ضيق: هذا هو اليوم الوحيد المناسب';
+    const dateTxt = `أفضل نافذة: **${fmtRangeAr(data, winner.day, days)}** (بتوقيت UTC)، لمهمة مدتها ${sc(days)} يومًا تبدأ في ${fmtDayAr(data, winner.day)}. في هذا الموقع يجتاز **${sc(f.eligibleDays)}** يومًا من أصل ${sc(f.totalDays)} يومًا ممكنًا كل القواعد، ${room}.`;
+    lines.push(lineAr('l-date', 'leader', LEADER, 'happy', dateTxt, [...used]));
+    used.length = 0;
+
+    if (energy) {
+      const o = energy.out;
+      const k = (x) => { const v = Math.round(x); used.push(v); return n(v); };
+      const eTxt = `الطاقة والحرارة حسب المحاكاة: تنتج الألواح **${k(o.eSolarKWh)} كيلوواط ساعة** مقابل حمل ${k(o.eLoadKWh)} كيلوواط ساعة، ولا ينخفض شحن البطارية عن **${k(o.minSocPct)}%**، وتتراوح حرارة الأرض بين ${k(o.tempMinC)} °م و${k(o.tempMaxC)} °م. التقييم: **${SUITABILITY[energy.rating].label_ar}**.`;
+      lines.push(lineAr('l-energy', 'leader', LEADER, energy.rating === 'high' ? 'happy' : 'nervous', eTxt, [...used]));
+      used.length = 0;
+    }
+
+    const weak = active.filter((a) => ev.aspects[a].status === 'marginal');
+    if (weak.length) {
+      const a = weak[0];
+      const fx = factAr(a, ev.aspects[a], (x) => { used.push(x); return n(x); });
+      const L = ev.aspects[a].metrics[0].limit; used.push(L);
+      const wl = `انتبه إلى ${LBL(a)}: يجتاز الحد، لكن بالكاد (${fx}، وحدّك ${n(L)}${unitAr(ev.aspects[a].metrics[0].key)}).`;
+      lines.push(lineAr('l-watch', 'leader', LEADER, 'nervous', wl, [...used]));
+      used.length = 0;
+    }
+  } else {
+    const hints = relaxHints(ev);
+    const dir = (d) => (d === 'at least' ? 'على الأقل' : 'على الأكثر');
+    const fails = hints.map((h) => `${LBL(h.aspect)} (القيمة **${(used.push(h.value), n(h.value))}${unitAr(h.key)}**، وطلبت ${(used.push(h.limit), n(h.limit))}${unitAr(h.key)} ${dir(h.direction)})`).join('؛ ');
+    lines.push(lineAr('l-verdict', 'leader', LEADER, 'thinking',
+      `الإجابة الصريحة: **لا يوجد موقع يجتاز كل القواعد.** الأقرب هو **${iso(winner.regionName)}**، الموقع ${siteNo(winner)}، ويقصّر في ${fails}.`, [...used], 'nogo'));
+    used.length = 0;
+    if (hints.length) {
+      const h = hints[0];
+      lines.push(lineAr('l-relax', 'leader', LEADER, 'happy',
+        `إذا كانت مهمتك تحتمل **${(used.push(h.relaxTo), n(h.relaxTo))}${unitAr(h.key)}** ${dir(h.direction)} في ${LBL(h.aspect)}، فسيجتاز هذا الموقع. وإلا فجرّب نافذة بدء أخرى أو مهمة أقصر.`, [...used]));
+      used.length = 0;
+    }
+  }
+
+  if (vote !== undefined && winner) {
+    let txt; const vu = [];
+    const vn = (x) => { vu.push(x); return n(x); };
+    if (vote == null) txt = 'تركت لي الاختيار، وهذا هو جوابي.';
+    else if (vote === winner.region) txt = `اخترت **${iso(winner.regionName)}** أنت أيضًا. نحن متفقان، وللأسباب نفسها التي تقولها الأرقام.`;
+    else {
+      const p = places.find((q) => q.region === vote);
+      if (p) {
+        const weak = ORDER.filter((a) => ['nogo', 'unknown', 'marginal'].includes(p.ev.aspects[a].status)).map(LBL);
+        const a = Math.round(p.ev.overall), b = Math.round(winner.ev.overall);
+        txt = a === b
+          ? `اخترت **${iso(p.regionName)}**. قرار متقارب: يتعادل في الدرجة (**${vn(a)}**)${weak.length ? `، لكن المجلس نبّه إلى ${weak.join(' و')}` : ''}، و${iso(winner.regionName)} أقوى في أضعف جوانبه. وهذا ما يرجّح الكفة عندي.`
+          : `اخترت **${iso(p.regionName)}**. حدس معقول، لكن درجته **${vn(a)}** مقابل ${vn(b)} هنا${weak.length ? `، كما نبّه المجلس إلى ${weak.join(' و')}` : ''}. لهذا لن أختاره.`;
+      }
+    }
+    if (txt) lines.push(lineAr('l-vote', 'leader', LEADER, vote === winner.region || vote == null ? 'happy' : 'thinking', txt, vu));
+  }
+
+  if (replan) {
+    let txt;
+    const oldName = replan.site ? `${replan.site.name}` : 'موقعك القديم';
+    if (!replan.inWindow) txt = 'بخصوص خطتك القديمة: تاريخها خارج نافذة البيانات، فلا أستطيع اختبارها. كل ما سبق إجابة جديدة لمتطلباتك الجديدة.';
+    else if (replan.recommendation === 'keep') txt = `بخصوص خطتك القديمة في **${iso(oldName)}**: ما زالت تجتاز المتطلبات الجديدة (الدرجة **${(used.push(Math.round(replan.underNew.overall)), n(Math.round(replan.underNew.overall)))}**). يمكنك الإبقاء عليها.`;
+    else if (replan.recommendation === 'move-better') txt = `بخصوص خطتك القديمة في **${iso(oldName)}**: ما زالت تجتاز، لكن درجة **${iso(winner.regionName)}** أصبحت أعلى بوضوح. الانتقال يستحق التفكير.`;
+    else if (replan.recommendation === 'shift') txt = `بخصوص خطتك القديمة في **${iso(oldName)}**: في التاريخ القديم تخالف قاعدة تحت المتطلبات الجديدة، لكن الموقع نفسه يصلح في **${fmtDayAr(data, replan.shiftTo.day)}**. تاريخ جديد قد ينقذ الخطة.`;
+    else txt = `بخصوص خطتك القديمة في **${iso(oldName)}**: تحت المتطلبات الجديدة تخالف قاعدة في كل التواريخ الممكنة. حان وقت الانتقال إلى مكان جديد.`;
+    lines.push(lineAr('l-replan', 'leader', LEADER, replan.recommendation === 'keep' ? 'happy' : 'thinking', txt, [...used]));
     used.length = 0;
   }
   return lines;

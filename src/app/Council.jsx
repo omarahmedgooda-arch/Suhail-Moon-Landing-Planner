@@ -5,9 +5,10 @@ import { StatusPill } from '../components/ui.jsx';
 import { Avatar, SuhailStar } from '../components/Avatar.jsx';
 import { VERDICT } from '../engine/rules.js';
 import { coord } from '../engine/banter.js';
-import { fmtDay, fmtRange } from '../engine/plan.js';
+import { fmtDay, fmtDayAr, fmtRange, fmtRangeAr } from '../engine/plan.js';
 import { richLength } from '../components/ui.jsx';
 import { useReducedMotion } from '../hooks.js';
+import { useLang, useT } from '../i18n.js';
 import { EnergyPanel, SiteDossier } from './Science.jsx';
 import { PlaceNumbers, WhyButton } from './Numbers.jsx';
 
@@ -36,6 +37,10 @@ export default function Council({ run, data, mode, onVerdict, onBack }) {
   const [science, setScience] = useState(false);
   const [vote, setVote] = useState(null);
   const endRef = useRef(null);
+  const t = useT();
+  const ar = useLang() === 'ar';
+  const FD = ar ? fmtDayAr : fmtDay, FR = ar ? fmtRangeAr : fmtRange;
+  const coordL = (st) => (ar ? `${Math.abs(st.lat_deg).toFixed(2)}° جنوبًا، ${st.lon_deg.toFixed(2)}° شرقًا` : coord(st));
 
   const place = places[idx];
   const lines = scripts[idx];
@@ -66,10 +71,10 @@ export default function Council({ run, data, mode, onVerdict, onBack }) {
   return (
     <section className="stage" aria-labelledby="council-t">
       <div className="wrap">
-        <p className="eyebrow">Step 3 · The council</p>
-        <h2 className="title" id="council-t">Place {idx + 1} of {places.length}: {place.regionName}</h2>
+        <p className="eyebrow">{t('Step 3 · The council', 'الخطوة 3 · المجلس')}</p>
+        <h2 className="title" id="council-t">{t(`Place ${idx + 1} of ${places.length}`, `الموقع ${idx + 1} من ${places.length}`)}: <bdi>{place.regionName}</bdi></h2>
 
-        <ol className="place-steps" aria-label="Places">
+        <ol className="place-steps" aria-label={t('Places', 'المواقع')}>
           {places.map((p, i) => (
             <li key={p.region}>
               <button type="button" className={`place-step ${i === idx ? 'on' : ''} ${count[i] ? 'seen' : ''}`} aria-current={i === idx ? 'step' : undefined} onClick={() => go(i)}>
@@ -83,14 +88,14 @@ export default function Council({ run, data, mode, onVerdict, onBack }) {
           <div className="council-left">
             <RegionMedia key={place.region} data={data} regionId={place.region} site={place.site} startHour={place.day * 24} hours={mission.durationDays * 24} />
             <div className="place-card">
-              <div className="pc-row"><StatusPill status={ev.verdict} label={VERDICT[ev.verdict].label} /><span className="mono">score {Math.round(ev.overall)}/100</span></div>
-              <p><strong>Site {place.site.name.split('·')[1]?.trim()}</strong> · <span className="mono">{coord(place.site)}</span> · elevation <span className="mono">{place.site.elevation_m} m</span></p>
-              <p>Best start <strong>{fmtDay(data, place.day)}</strong> <span className="muted">({fmtRange(data, place.day, mission.durationDays)}, UTC)</span></p>
+              <div className="pc-row"><StatusPill status={ev.verdict} label={VERDICT[ev.verdict].label} /><span className="mono">{t('score', 'الدرجة')} {Math.round(ev.overall)}/100</span></div>
+              <p><strong>{t('Site', 'الموقع')} {place.site.name.split('·')[1]?.trim()}</strong> · <span className="mono">{coordL(place.site)}</span> · {t('elevation', 'الارتفاع')} <span className="mono num">{place.site.elevation_m} m</span></p>
+              <p>{t('Best start', 'أفضل موعد للبدء')} <strong>{FD(data, place.day)}</strong> <span className="muted">({FR(data, place.day, mission.durationDays)}، UTC)</span></p>
             </div>
           </div>
 
           <div className="council-right">
-            <div className="chat meeting" role="log" aria-live="polite" aria-label="The council’s conversation">
+            <div className="chat meeting" role="log" aria-live="polite" aria-label={t('The council’s conversation', 'نقاش المجلس')}>
               {lines.slice(0, shown).map((l, i) => {
                 const isAspect = l.speaker !== 'guide' && l.key.startsWith('ch-');
                 return (
@@ -106,52 +111,52 @@ export default function Council({ run, data, mode, onVerdict, onBack }) {
             </div>
 
             <div className="chat-ctl player">
-              {!done && <button type="button" className="btn btn-primary" onClick={() => setPlaying((p) => !p)}>{playing ? '❚❚ Pause' : '▶ Play'}</button>}
+              {!done && <button type="button" className="btn btn-primary" onClick={() => setPlaying((p) => !p)}>{playing ? t('❚❚ Pause', '❚❚ إيقاف مؤقت') : t('▶ Play', '▶ تشغيل')}</button>}
               {!done && (
-                <div className="seg" role="radiogroup" aria-label="Speed">
+                <div className="seg" role="radiogroup" aria-label={t('Speed', 'السرعة')}>
                   {[1, 2].map((v) => (<button key={v} type="button" role="radio" aria-checked={speed === v} className={speed === v ? 'on' : ''} onClick={() => setSpeed(v)}>{v}×</button>))}
                 </div>
               )}
-              {!done && <button type="button" className="btn btn-ghost" onClick={showAll}>Show everything</button>}
-              {done && !last && <button type="button" className="btn btn-primary" onClick={() => go(idx + 1)}>Next place: {places[idx + 1].regionName} →</button>}
-              {!last && <button type="button" className="btn btn-ghost" onClick={() => go(places.length - 1)}>Skip to the last place</button>}
+              {!done && <button type="button" className="btn btn-ghost" onClick={showAll}>{t('Show everything', 'اعرض كل شيء')}</button>}
+              {done && !last && <button type="button" className="btn btn-primary" onClick={() => go(idx + 1)}>{t('Next place:', 'الموقع التالي:')} {places[idx + 1].regionName} {t('→', '←')}</button>}
+              {!last && <button type="button" className="btn btn-ghost" onClick={() => go(places.length - 1)}>{t('Skip to the last place', 'انتقل إلى آخر موقع')}</button>}
             </div>
 
             {done && last && (
               <div className="panel vote">
-                <h3 className="panel-title">Before Hakim decides: which place would you choose?</h3>
+                <h3 className="panel-title">{t('Before Hakim decides: which place would you choose?', 'قبل أن يقرر حكيم: أي موقع تختار أنت؟')}</h3>
                 <ul className="vote-opts">
                   {places.map((p) => (
                     <li key={p.region}><button type="button" aria-pressed={vote === p.region} onClick={() => setVote(p.region)}>
-                      <span className="pr-n">{p.rank}</span><strong>{p.regionName}</strong><StatusPill status={p.ev.verdict} label={VERDICT[p.ev.verdict].label} />
+                      <span className="pr-n">{p.rank}</span><strong><bdi>{p.regionName}</bdi></strong><StatusPill status={p.ev.verdict} label={VERDICT[p.ev.verdict].label} />
                     </button></li>
                   ))}
-                  <li><button type="button" aria-pressed={vote === 'none'} onClick={() => setVote('none')}>I’ll let Hakim decide</button></li>
+                  <li><button type="button" aria-pressed={vote === 'none'} onClick={() => setVote('none')}>{t('I’ll let Hakim decide', 'أترك القرار لحكيم')}</button></li>
                 </ul>
-                <div className="cta-row"><button type="button" className="btn btn-primary" disabled={!vote} onClick={() => onVerdict(vote === 'none' ? null : vote)}>Hear Hakim’s verdict →</button></div>
+                <div className="cta-row"><button type="button" className="btn btn-primary" disabled={!vote} onClick={() => onVerdict(vote === 'none' ? null : vote)}>{t('Hear Hakim’s verdict →', 'اسمع قرار حكيم ←')}</button></div>
               </div>
             )}
 
             <details className="numbers" open={science}>
-              <summary>The numbers behind this place</summary>
-              <PlaceNumbers ev={ev} caption={`Numbers for ${place.regionName}`} />
+              <summary>{t('The numbers behind this place', 'الأرقام وراء هذا الموقع')}</summary>
+              <PlaceNumbers ev={ev} caption={t(`Numbers for ${place.regionName}`, `أرقام ${place.regionName}`)} />
             </details>
           </div>
         </div>
 
         <div className="science-toggle">
-          <button type="button" className="btn btn-ghost" aria-expanded={science} onClick={() => setScience((v) => !v)}>{science ? 'Hide the full site analysis' : 'Show the full site analysis: data, constraints, power & thermal simulation'}</button>
+          <button type="button" className="btn btn-ghost" aria-expanded={science} onClick={() => setScience((v) => !v)}>{science ? t('Hide the full site analysis', 'أخفِ التحليل الكامل للموقع') : t('Show the full site analysis: data, constraints, power & thermal simulation', 'اعرض التحليل الكامل للموقع: البيانات والقيود ومحاكاة الطاقة والحرارة')}</button>
         </div>
         {science && (
           <div className="science">
-            <div className="panel"><h3 className="panel-title">Site dossier · {place.regionName}</h3><SiteDossier place={place} data={data} mission={mission} /></div>
-            <div className="panel"><h3 className="panel-title">Solar energy & thermal environment assessment</h3>
-              <p className="panel-text small">Hour-by-hour simulation of this site for your mission window ({mission.durationDays} days from {fmtDay(data, place.day)}), using the real terrain horizon and Sun geometry.</p>
+            <div className="panel"><h3 className="panel-title">{t('Site dossier', 'ملف الموقع')} · {place.regionName}</h3><SiteDossier place={place} data={data} mission={mission} /></div>
+            <div className="panel"><h3 className="panel-title">{t('Solar energy & thermal environment assessment', 'تقييم الطاقة الشمسية والبيئة الحرارية')}</h3>
+              <p className="panel-text small">{ar ? `محاكاة ساعة بساعة لهذا الموقع خلال نافذة مهمتك (${mission.durationDays} يومًا بدءًا من ${fmtDayAr(data, place.day)})، باستخدام أفق التضاريس الحقيقي وهندسة الشمس.` : `Hour-by-hour simulation of this site for your mission window (${mission.durationDays} days from ${fmtDay(data, place.day)}), using the real terrain horizon and Sun geometry.`}</p>
               <EnergyPanel sim={energy[idx]} data={data} day={place.day} mission={mission} />
             </div>
           </div>
         )}
-        <p className="stage-back"><button type="button" className="btn btn-ghost" onClick={onBack}>← Back to the map</button></p>
+        <p className="stage-back"><button type="button" className="btn btn-ghost" onClick={onBack}>{t('← Back to the map', '→ العودة إلى الخريطة')}</button></p>
       </div>
     </section>
   );

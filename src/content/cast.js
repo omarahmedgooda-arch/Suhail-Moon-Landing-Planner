@@ -29,41 +29,56 @@ const STUDENT_LEADER = { id: 'leader', name: 'The Wise Doctor', role: 'Mission e
 export const EXPERT = {
   terrain: {
     name: 'Dr. Badr', meaning: 'Badr = the full Moon', role: 'Surface geologist · terrain lead',
+    name_ar: 'د. بدر', meaning_ar: 'البدر = القمر المكتمل', role_ar: 'جيولوجي السطح · مسؤول التضاريس',
+    voice_ar: 'أكبر الحاضرين سنًّا. يتكلم ببطء وبجمل قصيرة واثقة، ويثق في الأرض أكثر من أي نموذج. رأى مركبات تنقلب ولا يريد أن يرى ذلك مرة أخرى.',
+    cares_ar: 'الميل، والصخور، ومنطقة هبوط مستوية، ومسار اقتراب نظيف.', redLine_ar: 'يرفض أي موقع يتجاوز ميله الحد، مهما كانت الشمس فيه.', risk_ar: 'منخفض', argues_ar: 'من الخبرة والسوابق.',
     voice: 'The elder of the room. Speaks slowly, in short certain sentences, and trusts the ground more than any model. Has seen landers fall over and does not want to see it again.',
     cares: 'Slope, boulders, a level pad, a clean approach path.', redLine: 'Will veto any site where the slope is over the limit, whatever the sunlight.',
     risk: 'Low', argues: 'From experience and precedent.',
-    inspired: { who: 'Farouk El-Baz', where: 'Egypt / USA', what: 'Geologist who worked with NASA on the Apollo programme, helping select lunar landing sites and training astronauts in lunar geology.', photo: 'el-baz.jpg', source: { label: 'Wikipedia – Farouk El-Baz', url: 'https://en.wikipedia.org/wiki/Farouk_El-Baz' } },
+    inspired: { who: 'Farouk El-Baz', where: 'Egypt / USA', who_ar: 'فاروق الباز', where_ar: 'مصر / الولايات المتحدة', what_ar: 'جيولوجي عمل مع ناسا في برنامج أبولو، وساعد في اختيار مواقع الهبوط على القمر وتدريب رواد الفضاء على جيولوجيا القمر.', what: 'Geologist who worked with NASA on the Apollo programme, helping select lunar landing sites and training astronauts in lunar geology.', photo: 'el-baz.jpg', source: { label: 'Wikipedia – Farouk El-Baz', url: 'https://en.wikipedia.org/wiki/Farouk_El-Baz' } },
   },
   sunlight: {
     name: 'Tariq', meaning: 'at-Tariq = the morning star', role: 'Power systems engineer · solar lead',
+    name_ar: 'طارق', meaning_ar: 'الطارق = نجم الصباح', role_ar: 'مهندس أنظمة الطاقة · مسؤول الطاقة الشمسية',
+    voice_ar: 'شاب سريع، والأرقام عنده أولًا. يتكلم بالواط والساعات والكيلوواط ساعة، ويفقد صبره مع أي شيء لا يمكن قياسه.',
+    cares_ar: 'ساعات الشمس، وإنتاج الألواح، وهامش الطاقة، وشحن البطارية.', redLine_ar: 'لا لأي موقع تصل فيه البطارية إلى حد التفريغ الأدنى.', risk_ar: 'متوسط', argues_ar: 'من ميزان الطاقة.',
     voice: 'Young, quick, numbers first. Talks in watts, hours and kilowatt-hours, and gets impatient with anything that cannot be measured.',
     cares: 'Sunlit hours, array output, energy margin, battery state of charge.', redLine: 'No site where the battery hits its depth-of-discharge floor.',
     risk: 'Medium', argues: 'From the energy balance.',
-    inspired: { who: 'Sultan Alneyadi', where: 'United Arab Emirates', what: 'Astronaut who flew a six-month ISS mission in 2023 and made the first spacewalk by an Arab astronaut, preparing the station for its solar-array power upgrade.', photo: 'alneyadi.jpg', photoCredit: 'Photo: NASA', source: { label: 'NASA – Astronauts begin spacewalk to upgrade station power (28 Apr 2023)', url: 'https://www.nasa.gov/blogs/spacestation/2023/04/28/astronauts-begin-spacewalk-to-upgrade-station-power/' } },
+    inspired: { who: 'Sultan Alneyadi', where: 'United Arab Emirates', who_ar: 'سلطان النيادي', where_ar: 'الإمارات العربية المتحدة', what_ar: 'رائد فضاء قضى ستة أشهر في محطة الفضاء الدولية عام 2023، ونفّذ أول سير في الفضاء لرائد فضاء عربي، لتجهيز المحطة لترقية ألواحها الشمسية.', what: 'Astronaut who flew a six-month ISS mission in 2023 and made the first spacewalk by an Arab astronaut, preparing the station for its solar-array power upgrade.', photo: 'alneyadi.jpg', photoCredit: 'Photo: NASA', photoCredit_ar: 'الصورة: ناسا', source: { label: 'NASA – Astronauts begin spacewalk to upgrade station power (28 Apr 2023)', url: 'https://www.nasa.gov/blogs/spacestation/2023/04/28/astronauts-begin-spacewalk-to-upgrade-station-power/' } },
   },
   night: {
     name: 'Dr. Thuraya', meaning: 'ath-Thuraya = the Pleiades', role: 'Thermal engineer · night-survival lead',
+    name_ar: 'د. ثريا', meaning_ar: 'الثريا = عنقود نجوم معروف', role_ar: 'مهندسة حرارية · مسؤولة الصمود ليلًا',
+    voice_ar: 'دقيقة وعنيدة بهدوء. تفكر بالكلفن وبأسوأ الاحتمالات، وتسأل في كل مرة: «وماذا يحدث في أطول ساعة ظلام؟»',
+    cares_ar: 'أطول فترة ظلام، ومدى حرارة السطح، وقدرة المدفئات، وتحمّل البطارية.', redLine_ar: 'لا ظلام أطول من تحمّل البطارية مع أحمال الليل.', risk_ar: 'منخفض', argues_ar: 'من تحليل أسوأ الحالات.',
     voice: 'Precise and quietly stubborn. Thinks in kelvin and in worst cases; asks “and what happens in the longest dark hour?” every single time.',
     cares: 'Longest darkness, surface temperature range, heater power, battery endurance.', redLine: 'No darkness longer than the battery endurance on the night-time load.',
     risk: 'Low', argues: 'From worst-case analysis.',
-    inspired: { who: 'Tahani Amer', where: 'Egypt / USA', what: 'NASA engineer who grew up near Cairo and joined NASA in 1992, working on computational fluid dynamics and wind-tunnel tests with pressure- and thermal-sensitive paint; she patented a system for measuring the thermal conductivity of thin films.', photo: 'amer.jpg', photoCredit: 'Photo: NASA', source: { label: 'NASA – Tahani Amer', url: 'https://www.nasa.gov/people/tahani-amer' } },
+    inspired: { who: 'Tahani Amer', where: 'Egypt / USA', who_ar: 'تهاني عامر', where_ar: 'مصر / الولايات المتحدة', what_ar: 'مهندسة في ناسا نشأت قرب القاهرة والتحقت بناسا عام 1992، وعملت في ديناميكا الموائع الحسابية وتجارب أنفاق الرياح بدهانات حساسة للضغط والحرارة، ولها براءة اختراع لنظام يقيس التوصيل الحراري للأغشية الرقيقة.', what: 'NASA engineer who grew up near Cairo and joined NASA in 1992, working on computational fluid dynamics and wind-tunnel tests with pressure- and thermal-sensitive paint; she patented a system for measuring the thermal conductivity of thin films.', photo: 'amer.jpg', photoCredit: 'Photo: NASA', photoCredit_ar: 'الصورة: ناسا', source: { label: 'NASA – Tahani Amer', url: 'https://www.nasa.gov/people/tahani-amer' } },
   },
   comms: {
     name: 'Nasr', meaning: 'an-Nasr = the eagle stars (Vega, Altair)', role: 'Communications officer · link lead',
+    name_ar: 'نسر', meaning_ar: 'النسر = نجما النسر الواقع والطائر', role_ar: 'ضابط الاتصالات · مسؤول الاتصال',
+    voice_ar: 'هادئ ورسمي وخبير في الإجراءات. يقيس كل شيء بالاتصال مع الأرض، ويذكّر الجميع بأن المركبة التي لا يسمعها أحد مركبة ضائعة.',
+    cares_ar: 'ظهور الأرض، وأطول انقطاع، وتوجيه الهوائي، وحجم البيانات.', redLine_ar: 'لا انقطاع أطول من الحد أثناء العمليات الحرجة.', risk_ar: 'منخفض', argues_ar: 'من الإجراءات والاحتياط.',
     voice: 'Calm, formal, a veteran of procedures. Measures everything against the link to Earth and reminds the room that a lander nobody can hear is a lander that is lost.',
     cares: 'Earth in view, longest blackout, antenna pointing, data volume.', redLine: 'No blackout longer than the limit during critical operations.',
     risk: 'Low', argues: 'From procedure and redundancy.',
-    inspired: { who: 'Sultan bin Salman Al Saud', where: 'Saudi Arabia', what: 'Payload specialist on Space Shuttle mission STS-51-G (June 1985), the first Arab and first Muslim in space; the crew deployed the Arabsat-1B communications satellite.', photo: 'sultan-bin-salman.jpg', photoCredit: 'Photo: NASA', source: { label: 'Wikipedia – STS-51-G', url: 'https://en.wikipedia.org/wiki/STS-51-G' } },
+    inspired: { who: 'Sultan bin Salman Al Saud', where: 'Saudi Arabia', who_ar: 'سلطان بن سلمان آل سعود', where_ar: 'المملكة العربية السعودية', what_ar: 'اختصاصي حمولة في رحلة المكوك STS-51-G (يونيو 1985)، وأول عربي وأول مسلم يصعد إلى الفضاء؛ وأطلق الطاقم خلالها قمر الاتصالات عربسات 1B.', what: 'Payload specialist on Space Shuttle mission STS-51-G (June 1985), the first Arab and first Muslim in space; the crew deployed the Arabsat-1B communications satellite.', photo: 'sultan-bin-salman.jpg', photoCredit: 'Photo: NASA', photoCredit_ar: 'الصورة: ناسا', source: { label: 'Wikipedia – STS-51-G', url: 'https://en.wikipedia.org/wiki/STS-51-G' } },
   },
   science: {
     name: 'Dr. Najm', meaning: 'Najm = star', role: 'Planetary scientist · science lead',
+    name_ar: 'د. نجم', meaning_ar: 'نجم', role_ar: 'عالم كواكب · مسؤول العلوم',
+    voice_ar: 'متحمس ومقنع. يجرّ الحديث دائمًا نحو الجليد والمصائد الباردة، وهو الأكثر استعدادًا لتقبّل المخاطرة من أجل هدف أفضل.',
+    cares_ar: 'المسافة إلى المناطق المظللة دائمًا، واحتمال وجود جليد الماء، وطول الرحلة.', redLine_ar: 'الموقع الآمن البعيد عن الهدف مجرد «موقف سيارات جميل».', risk_ar: 'مرتفع', argues_ar: 'من العائد العلمي.',
     voice: 'Enthusiastic and persuasive. Always pulls the conversation toward the ice and the cold traps, and is the one most willing to accept risk for a better target.',
     cares: 'Distance to permanently shadowed regions, water-ice potential, traverse length.', redLine: 'A safe site too far from the target is “a beautiful parking lot”.',
     risk: 'High', argues: 'From science return.',
-    inspired: { who: 'Essam Heggy', where: 'Egypt / USA', what: 'Planetary scientist (University of Southern California, NASA JPL) who uses radar sounding to look for water and ice beneath planetary surfaces and desert sand.', photo: 'heggy.jpg', source: { label: 'Heggy Research Group, USC', url: 'https://heggyresearch.usc.edu' } },
+    inspired: { who: 'Essam Heggy', where: 'Egypt / USA', who_ar: 'عصام حجي', where_ar: 'مصر / الولايات المتحدة', what_ar: 'عالم كواكب (جامعة جنوب كاليفورنيا ومختبر الدفع النفاث JPL) يستخدم السبر الراداري للبحث عن الماء والجليد تحت أسطح الكواكب ورمال الصحراء.', what: 'Planetary scientist (University of Southern California, NASA JPL) who uses radar sounding to look for water and ice beneath planetary surfaces and desert sand.', photo: 'heggy.jpg', source: { label: 'Heggy Research Group, USC', url: 'https://heggyresearch.usc.edu' } },
   },
 };
-const EXPERT_LEADER = { id: 'leader', name: 'Hakim', role: 'Flight director', meaning: '“Wise” in Arabic' };
+const EXPERT_LEADER = { id: 'leader', name: 'Hakim', role: 'Flight director', meaning: '“Wise” in Arabic', name_ar: 'حكيم', role_ar: 'مدير الرحلة', meaning_ar: 'من الحكمة' };
 
 /** The cast for a mode: members keyed by aspect id (learn cards are shared), plus guide and leader. */
 export function castFor(mode) {

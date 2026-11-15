@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { ModeContext } from './components/ModeContext.js';
 import { LangContext, loadLang, saveLang } from './i18n.js';
+import { presetById } from './content/missions.js';
 import { simulateEnergy } from './engine/energy.js';
 import Academy from './app/Academy.jsx';
 import CastPage from './app/CastPage.jsx';
@@ -55,6 +56,11 @@ export default function App({ data: dataProp }) {
   const [selected, setSelected] = useState(null);
   const [busy, setBusy] = useState(false);
   const [vote, setVote] = useState(undefined);
+  // Keep the default mission names in the chosen language (only if the user has not typed their own).
+  useEffect(() => {
+    const swap = (d) => { if (!d) return d; const p = presetById(d.typeId); return p && (d.name === p.name || d.name === p.name_ar) ? { ...d, name: lang === 'ar' ? (p.name_ar ?? p.name) : p.name } : d; };
+    setExpert((e) => swap(e));
+  }, [lang, expert?.typeId]);
 
   useEffect(() => {
     if (dataProp) { setRaw(dataProp); return undefined; }
@@ -128,15 +134,15 @@ export default function App({ data: dataProp }) {
     if (!run) return null;
     const { result, mission, energy, replan } = run;
     return {
-      scripts: result.places.map((p, i) => placeScript(p, { index: i, total: result.places.length, data, mission, mode, energy: energy[i] })),
-      leader: leaderScript(result, { data, replan, mode, energy: energy[0], vote }),
-      intro: mapIntro(result, mode),
+      scripts: result.places.map((p, i) => placeScript(p, { index: i, total: result.places.length, data, mission, mode, energy: energy[i], lang })),
+      leader: leaderScript(result, { data, replan, mode, energy: energy[0], vote, lang }),
+      intro: mapIntro(result, mode, lang),
     };
-  }, [run, mode, data, vote]);
+  }, [run, mode, data, vote, lang]);
   const runX = run && talk ? { ...run, ...talk } : null;
 
-  if (error) return <main className="loading"><p>Could not load the site data: {String(error.message || error)}</p></main>;
-  if (!data || !expert || !replanDraft) return <main className="loading"><SuhailStar size={72} /><p>Finding the stars…</p></main>;
+  if (error) return <main className="loading"><p>{lang === 'ar' ? 'تعذّر تحميل بيانات المواقع:' : 'Could not load the site data:'} {String(error.message || error)}</p></main>;
+  if (!data || !expert || !replanDraft) return <main className="loading"><SuhailStar size={72} /><p>{lang === 'ar' ? 'نبحث عن النجوم…' : 'Finding the stars…'}</p></main>;
 
   return (
     <LangContext.Provider value={lang}>

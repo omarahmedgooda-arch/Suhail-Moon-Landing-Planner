@@ -953,3 +953,5 @@ table.rank-table .cell .mono { white-space: pre; display: inline-block; vertical
 
 :root[lang="ar"] .eyebrow, :root[lang="ar"] .hc-k, :root[lang="ar"] .ms-k, :root[lang="ar"] .bubble-head span, :root[lang="ar"] .ms-tab span, :root[lang="ar"] .g-tag, :root[lang="ar"] .source-k, :root[lang="ar"] .story-dl dt, :root[lang="ar"] .mode-chip, :root[lang="ar"] .ss-days, :root[lang="ar"] .ss-target text, :root[lang="ar"] .ms-badge span { font-family: var(--font-body); letter-spacing: 0; text-transform: none; }
 :root[lang="ar"] .ms-badge strong { font-size: 1.15rem; }
+:root[dir="rtl"] svg { direction: ltr; }
+:root[lang="ar"] .numfield > span, :root[lang="ar"] .numfield span:first-child, :root[lang="ar"] .kv dt, :root[lang="ar"] .kv2 dt, :root[lang="ar"] .cast-dl dt, :root[lang="ar"] .mini-h, :root[lang="ar"] .rm-tabs button, :root[lang="ar"] summary span, :root[lang="ar"] .pc-row .mono, :root[lang="ar"] .seg button { font-family: var(--font-body); letter-spacing: 0; text-transform: none; }

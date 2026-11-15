@@ -10,7 +10,7 @@ import { GUIDE } from '../content/characters.js';
 import { DATA_RESOURCES, STORY_RESOURCES, TEAM } from '../content/about.js';
 import { VERDICT } from '../engine/rules.js';
 import { requirementRows } from '../engine/report.js';
-import { dayToIso, fmtDay, isoToDay, planMission, windowDays } from '../engine/plan.js';
+import { dayToIso, fmtDay, fmtDayAr, isoToDay, planMission, windowDays } from '../engine/plan.js';
 import { DataWindowNote, ReasonChips, RequirementsEditor, SitePicker, StudentPicker, defaultExpert, studentToMission } from './Forms.jsx';
 
 /* ------------------------------------------------------------------ home */
@@ -120,18 +120,19 @@ export function ExpertStart({ onNew, onReplan, onCast }) {
 
 /* ------------------------------------------------------------------ new mission */
 export function NewMission({ mode, data, student, setStudent, expert, setExpert, onCreate, busy }) {
+  const t = useT();
   const allOff = mode === 'expert' && Object.values(expert.levels).every((l) => l === 'off');
   return (
     <section className="stage" aria-labelledby="new-t">
       <div className="wrap narrow">
-        <p className="eyebrow">Step 1 · Assessment</p>
-        <h2 className="title" id="new-t">{mode === 'expert' ? 'What does your mission need?' : 'What kind of mission is it?'}</h2>
-        <p className="lead small">{mode === 'expert' ? 'Enter your requirements for the five aspects. SUHAIL will test every candidate site on every possible start date.' : 'Pick the one that sounds most like yours. SUHAIL turns it into limits for the five aspects.'}</p>
+        <p className="eyebrow">{t('Step 1 · Assessment', 'الخطوة 1 · التقييم')}</p>
+        <h2 className="title" id="new-t">{t('What does your mission need?', 'ماذا تحتاج مهمتك؟')}</h2>
+        <p className="lead small">{t('Enter your requirements for the five aspects. SUHAIL will test every candidate site on every possible start date.', 'أدخل متطلباتك في الجوانب الخمسة، وسيختبر سهيل كل موقع مرشح في كل تاريخ بدء ممكن.')}</p>
         <div className="panel">
           {mode === 'expert'
             ? <RequirementsEditor value={expert} onChange={setExpert} data={data} idp="new" mode={mode} />
             : <><StudentPicker value={student} onChange={setStudent} idp="new" mode={mode} /><DataWindowNote data={data} /></>}
-          <div className="cta-row"><button type="button" className="btn btn-primary" disabled={busy || allOff} onClick={onCreate}>{busy ? 'Analysing…' : 'Create mission'}</button></div>
+          <div className="cta-row"><button type="button" className="btn btn-primary" disabled={busy || allOff} onClick={onCreate}>{busy ? t('Analysing…', 'جارٍ التحليل…') : t('Create mission', 'أنشئ المهمة')}</button></div>
         </div>
       </div>
     </section>
@@ -140,6 +141,8 @@ export function NewMission({ mode, data, student, setStudent, expert, setExpert,
 
 /* ------------------------------------------------------------------ replan */
 export function ReplanMission({ mode, data, draft, setDraft, onReplan, busy }) {
+  const t = useT();
+  const lang = useLang();
   const set = (patch) => setDraft({ ...draft, ...patch });
   const last = windowDays(data) - 1;
   const oldDay = isoToDay(data, draft.oldIso);
@@ -148,37 +151,37 @@ export function ReplanMission({ mode, data, draft, setDraft, onReplan, busy }) {
   return (
     <section className="stage" aria-labelledby="rp-t">
       <div className="wrap narrow">
-        <p className="eyebrow">Step 1 · Replan assessment</p>
-        <h2 className="title" id="rp-t">Replan an old mission</h2>
-        <p className="lead small">Tell us what the old plan was, why it has to change, and what the mission needs now. SUHAIL then runs the same analysis and shows how the old plan holds up.</p>
+        <p className="eyebrow">{t('Step 1 · Replan assessment', 'الخطوة 1 · تقييم إعادة التخطيط')}</p>
+        <h2 className="title" id="rp-t">{t('Replan an old mission', 'إعادة تخطيط مهمة سابقة')}</h2>
+        <p className="lead small">{t('Tell us what the old plan was, why it has to change, and what the mission needs now. SUHAIL then runs the same analysis and shows how the old plan holds up.', 'أخبرنا بالخطة القديمة، وسبب تغييرها، وما تحتاجه المهمة الآن. سيجري سهيل التحليل نفسه ويبيّن هل ما زالت الخطة القديمة صالحة.')}</p>
 
         <div className="panel">
-          <h3 className="panel-title">1 · The old mission</h3>
+          <h3 className="panel-title">{t('1 · The old mission', '1 · المهمة القديمة')}</h3>
           <div className="req-top">
-            <label className="numfield wide" htmlFor="rp-site"><span>Planned landing site</span><SitePicker id="rp-site" data={data} value={draft.siteId} onChange={(v) => set({ siteId: v })} /></label>
-            <label className="numfield" htmlFor="rp-date"><span>Planned start date</span><input id="rp-date" type="date" min={dayToIso(data, 0)} max={dayToIso(data, last)} value={draft.oldIso} onChange={(e) => set({ oldIso: e.target.value })} /></label>
+            <label className="numfield wide" htmlFor="rp-site"><span>{t('Planned landing site', 'موقع الهبوط المخطط')}</span><SitePicker id="rp-site" data={data} value={draft.siteId} onChange={(v) => set({ siteId: v })} /></label>
+            <label className="numfield" htmlFor="rp-date"><span>{t('Planned start date', 'تاريخ البدء المخطط')}</span><input id="rp-date" type="date" min={dayToIso(data, 0)} max={dayToIso(data, last)} value={draft.oldIso} onChange={(e) => set({ oldIso: e.target.value })} /></label>
           </div>
-          {!dateOk && <p className="callout small" role="status">That date is outside the data ({fmtDay(data, 0)} → {fmtDay(data, last)}). SUHAIL can still replan, but it cannot test the old plan.</p>}
+          {!dateOk && <p className="callout small" role="status">{lang === 'ar' ? `هذا التاريخ خارج نطاق البيانات (${fmtDayAr(data, 0)} إلى ${fmtDayAr(data, last)}). يستطيع سهيل إعادة التخطيط، لكنه لا يستطيع اختبار الخطة القديمة.` : `That date is outside the data (${fmtDay(data, 0)} → ${fmtDay(data, last)}). SUHAIL can still replan, but it cannot test the old plan.`}</p>}
           {mode === 'expert'
-            ? <details className="limits"><summary>Old requirements <span>(optional, to show what changed)</span></summary><RequirementsEditor value={draft.oldExpert} onChange={(v) => set({ oldExpert: v })} data={data} idp="old" showDates={false} /></details>
+            ? <details className="limits"><summary>{t('Old requirements', 'المتطلبات القديمة')} <span>{t('(optional, to show what changed)', '(اختياري، لإظهار ما تغيّر)')}</span></summary><RequirementsEditor value={draft.oldExpert} onChange={(v) => set({ oldExpert: v })} data={data} idp="old" showDates={false} /></details>
             : <><p className="panel-text small">Which kind of mission was it?</p><StudentPicker value={draft.oldStudent} onChange={(v) => set({ oldStudent: v })} idp="old" /></>}
         </div>
 
         <div className="panel">
-          <h3 className="panel-title">2 · Why replan?</h3>
+          <h3 className="panel-title">{t('2 · Why replan?', '2 · لماذا إعادة التخطيط؟')}</h3>
           <ReasonChips value={draft.reasons} onChange={(v) => set({ reasons: v })} />
-          <label className="numfield wide" htmlFor="rp-note"><span>Anything else? (optional)</span><input id="rp-note" type="text" maxLength={140} value={draft.note} onChange={(e) => set({ note: e.target.value })} placeholder="For example: new rover is 40 kg heavier" /></label>
+          <label className="numfield wide" htmlFor="rp-note"><span>{t('Anything else? (optional)', 'أي تفاصيل أخرى؟ (اختياري)')}</span><input id="rp-note" type="text" maxLength={140} value={draft.note} onChange={(e) => set({ note: e.target.value })} placeholder={t('For example: new rover is 40 kg heavier', 'مثال: المركبة الجديدة أثقل بـ40 كجم')} /></label>
         </div>
 
         <div className="panel">
-          <h3 className="panel-title">3 · The new terms</h3>
+          <h3 className="panel-title">{t('3 · The new terms', '3 · الشروط الجديدة')}</h3>
           {mode === 'expert'
             ? <>
-                <div className="cta-row tight"><button type="button" className="btn btn-ghost" onClick={() => set({ newExpert: { ...draft.oldExpert, fromIso: draft.newExpert.fromIso, toIso: draft.newExpert.toIso, name: `${draft.oldExpert.name} (replan)` } })}>Copy the old requirements</button></div>
+                <div className="cta-row tight"><button type="button" className="btn btn-ghost" onClick={() => set({ newExpert: { ...draft.oldExpert, fromIso: draft.newExpert.fromIso, toIso: draft.newExpert.toIso, name: `${draft.oldExpert.name} ${t('(replan)', '(إعادة تخطيط)')}` } })}>{t('Copy the old requirements', 'انسخ المتطلبات القديمة')}</button></div>
                 <RequirementsEditor value={draft.newExpert} onChange={(v) => set({ newExpert: v })} data={data} idp="newr" />
               </>
             : <><StudentPicker value={draft.newStudent} onChange={(v) => set({ newStudent: v })} idp="newr" /><DataWindowNote data={data} /></>}
-          <div className="cta-row"><button type="button" className="btn btn-primary" disabled={busy || allOff} onClick={onReplan}>{busy ? 'Analysing…' : 'Replan'}</button></div>
+          <div className="cta-row"><button type="button" className="btn btn-primary" disabled={busy || allOff} onClick={onReplan}>{busy ? t('Analysing…', 'جارٍ التحليل…') : t('Replan', 'أعد التخطيط')}</button></div>
         </div>
       </div>
     </section>
@@ -206,30 +209,32 @@ export function MapStage({ run, data, onStart, onBack, selected, setSelected }) 
   const ln = intro.line;
   const reduced = useReducedMotion();
   const [introOn, setIntroOn] = useState(!reduced && !!videoUrl('intro-dive'));
+  const t = useT();
+  const lang = useLang();
   return (
     <section className="stage" aria-labelledby="map-t">
       <div className="wrap">
-        <p className="eyebrow">Step 2 · The map</p>
-        <h2 className="title" id="map-t">{result.hasWinner ? 'Your best five places' : 'The five nearest misses'}</h2>
+        <p className="eyebrow">{t('Step 2 · The map', 'الخطوة 2 · الخريطة')}</p>
+        <h2 className="title" id="map-t">{result.hasWinner ? t('Your best five places', 'أفضل خمسة مواقع لك') : t('The five nearest misses', 'أقرب خمسة مواقع إلى النجاح')}</h2>
         <div className="map-grid">
           <div className="map-left">
             {introOn && (
               <figure className="intro-dive">
                 <video src={videoUrl('intro-dive')} autoPlay muted playsInline onEnded={() => setIntroOn(false)} />
-                <figcaption><span className="muted small">Approaching the Moon… (illustrative footage)</span><button type="button" className="btn btn-ghost btn-sm" onClick={() => setIntroOn(false)}>Skip ▸</button></figcaption>
+                <figcaption><span className="muted small">{t('Approaching the Moon… (illustrative footage)', 'نقترب من القمر… (لقطات توضيحية)')}</span><button type="button" className="btn btn-ghost btn-sm" onClick={() => setIntroOn(false)}>{t('Skip ▸', 'تخطَّ ◂')}</button></figcaption>
               </figure>
             )}
             <PoleMap data={data} places={result.places} selected={selected} onSelect={setSelected} />
-            <p className="map-cap">The Moon’s south pole seen from above. Outlined areas are NASA’s Artemis <Term k="region">candidate regions</Term>; dots are the {data.sites.length} points SUHAIL tested. Numbered markers are your top {result.places.length}. Shaded relief from NASA LOLA elevation data.</p>
+            <p className="map-cap">{lang === 'ar' ? <>القطب الجنوبي للقمر من أعلى. المناطق المحددة هي <Term k="region">المناطق المرشحة</Term> لبرنامج Artemis التابع لناسا، والنقاط هي {data.sites.length} موقعًا اختبرها سهيل، والعلامات المرقمة هي أفضل {result.places.length} مواقع لك. التضاريس المظللة من بيانات الارتفاع NASA LOLA.</> : <>The Moon’s south pole seen from above. Outlined areas are NASA’s Artemis <Term k="region">candidate regions</Term>; dots are the {data.sites.length} points SUHAIL tested. Numbered markers are your top {result.places.length}. Shaded relief from NASA LOLA elevation data.</>}</p>
           </div>
           <div className="map-right">
-            <Speech id="guide" mood={ln.mood} name={GUIDE.name} role={GUIDE.role} text={ln.text} size={84} tone="guide" restartKey={run.madeAt} />
-            <ol className="place-list" aria-label="The five places">
+            <Speech id="guide" mood={ln.mood} name={tx(GUIDE, 'name', lang)} role={tx(GUIDE, 'role', lang)} text={ln.text} size={84} tone="guide" restartKey={run.madeAt} />
+            <ol className="place-list" aria-label={t('The five places', 'المواقع الخمسة')}>
               {result.places.map((p) => (
                 <li key={p.region}>
                   <button type="button" className={`place-row ${selected === p.region ? 'on' : ''}`} onClick={() => setSelected(p.region)} aria-pressed={selected === p.region}>
                     <span className="pr-n">{p.rank}</span>
-                    <span className="pr-name"><strong>{p.regionName}</strong><small>site {p.site.name.split('·')[1]?.trim()}</small></span>
+                    <span className="pr-name"><strong><bdi>{p.regionName}</bdi></strong><small>{t('site', 'الموقع')} {p.site.name.split('·')[1]?.trim()}</small></span>
                     <StatusPill status={p.ev.verdict} label={VERDICT[p.ev.verdict].label} />
                     <span className="mono pr-score">{Math.round(p.ev.overall)}</span>
                   </button>
@@ -237,12 +242,12 @@ export function MapStage({ run, data, onStart, onBack, selected, setSelected }) 
               ))}
             </ol>
             <details className="limits">
-              <summary>Your requirements</summary>
-              <ul>{requirementRows(mission).map(([a, l, t]) => (<li key={a}><span>{a} · {l}</span><span className="mono">{t}</span></li>))}</ul>
+              <summary>{t('Your requirements', 'متطلباتك')}</summary>
+              <ul>{requirementRows(mission, lang).map(([a, l, t]) => (<li key={a}><span>{a} · {l}</span><span className="mono">{t}</span></li>))}</ul>
             </details>
             <div className="cta-row tight">
-              <button type="button" className="btn btn-primary" onClick={onStart}>Start the tour →</button>
-              <button type="button" className="btn btn-ghost" onClick={onBack}>Change requirements</button>
+              <button type="button" className="btn btn-primary" onClick={onStart}>{t('Start the tour →', 'ابدأ الجولة ←')}</button>
+              <button type="button" className="btn btn-ghost" onClick={onBack}>{t('Change requirements', 'غيّر المتطلبات')}</button>
             </div>
           </div>
         </div>

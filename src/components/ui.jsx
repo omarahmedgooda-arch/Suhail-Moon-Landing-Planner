@@ -1,5 +1,6 @@
 import { useEffect, useId, useRef, useState } from 'react';
-import { GLOSSARY } from '../content/glossary.js';
+import { GLOSSARY, GLOSSARY_AR } from '../content/glossary.js';
+import { useLang } from '../i18n.js';
 import { useInView } from '../hooks.js';
 
 /* ---------- Rich text mini-markup:  **bold**   {{glossary-key|shown text}} ---------- */
@@ -34,7 +35,8 @@ export function Rich({ text, limit = Infinity }) {
 
 /* ---------- Glossary tooltip ---------- */
 export function Term({ k, children }) {
-  const g = GLOSSARY[k];
+  const lang = useLang();
+  const g = (lang === 'ar' ? GLOSSARY_AR[k] : null) ?? GLOSSARY[k];
   const id = useId();
   const [open, setOpen] = useState(false);
   const wrap = useRef(null);
@@ -74,6 +76,8 @@ export function Reveal({ children, as: Tag = 'div', delay = 0, className = '', .
 
 /* ---------- Status icons: shape + word, never colour alone ---------- */
 export const STATUS_WORD = { go: 'Go', marginal: 'Marginal', nogo: 'No-Go', unknown: 'Unverified', off: 'Off', risky: 'Risky' };
+export const STATUS_WORD_AR = { go: 'مناسب', marginal: 'على الحد', nogo: 'غير مناسب', unknown: 'غير مؤكد', off: 'متوقف', risky: 'بحذر' };
+const LABEL_AR = { GO: 'مناسب', RISKY: 'بحذر', 'NO-GO': 'غير مناسب', Go: 'مناسب', 'No-Go': 'غير مناسب', Marginal: 'على الحد', Unverified: 'غير مؤكد', Off: 'متوقف', Risky: 'بحذر' };
 
 export function StatusIcon({ status, size = 20 }) {
   const common = { width: size, height: size, viewBox: '0 0 24 24', 'aria-hidden': true, focusable: false };
@@ -93,15 +97,19 @@ export function StatusIcon({ status, size = 20 }) {
 }
 
 export function StatusPill({ status, label }) {
+  const lang = useLang();
+  const shown = lang === 'ar' ? (label ? LABEL_AR[label] ?? label : STATUS_WORD_AR[status]) : (label ?? STATUS_WORD[status]);
   return (
     <span className={`pill pill-${status}`}>
       <StatusIcon status={status} size={16} />
-      <span>{label ?? STATUS_WORD[status]}</span>
+      <span>{shown}</span>
     </span>
   );
 }
 
-export function SourceLink({ source, prefix = 'Source' }) {
+export function SourceLink({ source, prefix }) {
+  const lang = useLang();
+  prefix = prefix ?? (lang === 'ar' ? 'المصدر' : 'Source');
   return (
     <a className="source" href={source.url} target="_blank" rel="noreferrer noopener">
       <span className="source-k">{prefix}</span> {source.label}<span aria-hidden="true"> ↗</span>
