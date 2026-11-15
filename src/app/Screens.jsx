@@ -53,10 +53,27 @@ export function Home({ onStudent, onExpert }) {
           </section>
           <section aria-labelledby="team-t">
             <h2 className="sec-h" id="team-t">The team</h2>
-            <p><strong>{TEAM.name}</strong><br />{TEAM.university}<br />{TEAM.event} · challenge: {TEAM.challenge}</p>
-            {TEAM.members.length > 0 && <p className="small">{TEAM.members.join(' · ')}</p>}
+            <p><strong>{TEAM.name}</strong> is six engineering and computing students from three Egyptian universities, building SUHAIL for the {TEAM.event}, challenge “{TEAM.challenge}”.</p>
+            <p className="team-links"><a href={TEAM.repo} target="_blank" rel="noreferrer">Source code on GitHub ↗</a></p>
           </section>
         </div>
+
+        <section aria-labelledby="mem-t" className="members">
+          <h2 className="sec-h" id="mem-t">Meet the team</h2>
+          <ul className="member-grid">
+            {TEAM.members.map((m) => (
+              <li key={m.name} className="member">
+                <span className="member-mono" aria-hidden="true">{m.name.split(' ').filter(Boolean).slice(0, 2).map((w) => w[0]).join('')}</span>
+                <div className="member-body">
+                  <strong>{m.name}</strong>
+                  <span className="member-field">{m.field ?? m.faculty}</span>
+                  <span className="member-uni">{[m.field ? m.faculty : null, m.university].filter(Boolean).join(', ')}</span>
+                  {m.linkedin && <a className="member-in" href={m.linkedin} target="_blank" rel="noreferrer" aria-label={`${m.name} on LinkedIn`}>LinkedIn ↗</a>}
+                </div>
+              </li>
+            ))}
+          </ul>
+        </section>
 
         <section aria-labelledby="res-t" className="resources">
           <h2 className="sec-h" id="res-t">Resources we used</h2>

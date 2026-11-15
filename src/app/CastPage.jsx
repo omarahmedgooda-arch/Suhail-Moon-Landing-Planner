@@ -52,6 +52,7 @@ export default function CastPage({ mode, onStart }) {
                         <p><strong>{c.inspired.who}</strong> <span className="muted small">· {c.inspired.where}</span></p>
                         <p className="small">{c.inspired.what}</p>
                         {c.inspired.source && <SourceLink source={c.inspired.source} />}
+                        {c.inspired.photoCredit && <p className="muted small insp-credit">{c.inspired.photoCredit}</p>}
                       </div>
                     </div>
                   </>
@@ -69,7 +70,7 @@ export default function CastPage({ mode, onStart }) {
             <p>{expert ? 'Listens to all five, weighs the trade-offs and gives the go / no-go with numbers and dates. Original character.' : 'Calm and clever. Fixes the crew’s silly ideas and explains the real science.'}</p>
           </li>
         </ul>
-        {expert && <p className="field-note">Character art by the FASA Destination Team. Dialogue is invented and never attributed to the real people. Photos of the inspirations are not bundled; the team can add licensed photos in <code>public/inspired/</code>.</p>}
+        {expert && <p className="field-note">Character art by the FASA Destination Team. Dialogue is invented and never attributed to the real people. Photos of the inspirations are shown with respect, to credit the people whose work inspired these characters.</p>}
         <div className="cta-row"><button type="button" className="btn btn-primary" onClick={onStart}>Start a mission →</button></div>
       </div>
     </section>

@@ -2,23 +2,41 @@
 // Mission facts are checked against the sources linked on each card.
 import { SOURCES } from './characters.js';
 
+// Each story is a short animated sequence told by the Wise Doctor. Every fact is in the linked source.
+// scene: which animation StoryScene draws. guess: the student predicts before the reveal.
 export const MISSION_STORIES = [
   {
-    id: 'odysseus', name: 'Odysseus', code: 'IM-1', year: 2024, video: 'malapert_massif',
-    videoNote: 'NASA flyover of the Malapert Massif region, next to where Odysseus came down (near the crater Malapert A).',
-    objective: 'Intuitive Machines’ lander carried scientific and technology payloads to the Moon’s south polar region, including six NASA payloads. It targeted the area near the crater Malapert A.',
-    happened: 'It touched down on 22 February 2024 moving faster than planned. A landing leg caught the surface and the lander came to rest tilted on its side instead of standing upright.',
-    outcome: 'Odysseus still reached the surface, sent back data and photos and worked for about seven days. Lying on its side limited its antennas, solar power and some payload operations.',
-    lesson: 'A touchdown is not the same as a working lander. Surface conditions and landing stability decide what the mission can do afterwards.',
+    id: 'odysseus', name: 'Odysseus', code: 'IM-1', year: 2024, survived: '~7 days',
+    steps: [
+      { scene: 'launch', k: 'February 2024 · Launch', say: 'Meet Odysseus, a lander from the company Intuitive Machines. It is flying to the Moon’s south pole with six NASA payloads on board.' },
+      { scene: 'approach', k: 'The target', say: 'Its target: the area near the crater Malapert A. Now it has to come down gently and stand on its four legs.' },
+      { scene: 'fast', k: 'Your guess', say: 'Uh-oh. Odysseus is coming down faster than planned. What do you think happens next?',
+        guess: { options: [
+          { t: 'It lands perfectly, no problem', ok: false },
+          { t: 'A leg catches the ground and it tips onto its side', ok: true },
+          { t: 'It bounces back into space', ok: false },
+        ] } },
+      { scene: 'tip', k: '22 February 2024 · Touchdown', say: 'A landing leg caught the surface, and Odysseus came to rest tilted on its side instead of standing upright.' },
+      { scene: 'side', k: 'What it could still do', say: 'It still sent back data and photos for about seven days. But lying on its side, its antennas, solar power and some payloads could not work as planned.', badge: '~7 days' },
+      { scene: 'lesson', k: 'The lesson', say: 'A touchdown is not the same as a working lander. The ground where you land decides what the mission can do afterwards.' },
+    ],
     source: SOURCES.odysseus,
   },
   {
-    id: 'athena', name: 'Athena', code: 'IM-2', year: 2025, video: 'leibnitz_beta_plateau',
-    videoNote: 'NASA flyover of the Leibnitz Beta plateau, now named Mons Mouton: the area Athena was aiming for.',
-    objective: 'Intuitive Machines’ second lander aimed for Mons Mouton near the south pole, to demonstrate exploration technologies and drill into the soil to look for signs of water ice.',
-    happened: 'It landed on 6 March 2025, but inside a small crater some distance from its target, and again ended up lying on its side.',
-    outcome: 'Some instruments switched on, but with its solar panels pointing the wrong way in the cold, low-Sun polar environment it could not recharge, and the mission was declared over the next day.',
-    lesson: 'Where you land, how the ground is shaped, how the Sun lights it and how cold it gets all decide whether a mission can reach its goals.',
+    id: 'athena', name: 'Athena', code: 'IM-2', year: 2025, survived: '1 day',
+    steps: [
+      { scene: 'launch', k: '2025 · Launch', say: 'One year later, Intuitive Machines tried again with Athena, its second lander.' },
+      { scene: 'approach', k: 'The target', say: 'Athena aimed for Mons Mouton near the south pole. It carried a drill to dig into the soil and look for signs of water ice.' },
+      { scene: 'guess-crater', k: 'Your guess', say: 'Athena touches down, but not where it was aiming. Where do you think it ended up?',
+        guess: { options: [
+          { t: 'Right on top of its flat target', ok: false },
+          { t: 'Inside a small crater, lying on its side', ok: true },
+          { t: 'On the far side of the Moon', ok: false },
+        ] } },
+      { scene: 'crater', k: '6 March 2025 · Touchdown', say: 'It landed inside a small crater, some distance from its target, and again ended up lying on its side.' },
+      { scene: 'cold', k: 'What happened next', say: 'Its solar panels pointed the wrong way. With the Sun very low and the cold so extreme, it could not recharge, and the mission was declared over the next day.', badge: '1 day' },
+      { scene: 'lesson', k: 'The lesson', say: 'Where you land, the shape of the ground, how the Sun lights it and how cold it gets all decide whether a mission reaches its goals.' },
+    ],
     source: SOURCES.athena,
   },
 ];

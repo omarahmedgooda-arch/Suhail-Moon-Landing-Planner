@@ -147,17 +147,32 @@ More detail for contributors is in [`docs/DEVELOPER.md`](docs/DEVELOPER.md) and 
 
 ## Team
 
-**FASA Destination Team** · Elsewedy University of Technology (SUT) · NASA Space Apps Challenge Cairo 2026
+**FASA Destination Team** · NASA Space Apps Challenge Cairo 2026
+
+| Member | Field | University | |
+|---|---|---|---|
+| Omar Ahmed Gooda | Network & Cyber Security | Elsewedy University of Technology (SUTech) | [LinkedIn](https://www.linkedin.com/in/omar-ahmed-gooda-7486ab388/) |
+| Sara Ibrahim Sobhy | Electrical Power Engineering | Cairo University, Faculty of Engineering | [LinkedIn](https://www.linkedin.com/in/sara-i-919356247/) |
+| Bilal Magdy Abdel Malk | Network & Cyber Security | Elsewedy University of Technology (SUTech) | [LinkedIn](https://www.linkedin.com/in/bilal-magdy-abdelmalk/) |
+| Sara Hassan Ayyad | AI & Data Science | Elsewedy University of Technology (SUTech) | [LinkedIn](https://www.linkedin.com/in/sara-hassan-ayyad-8759a6367/) |
+| Jody Ahmed Reda | Computer Engineering | Cairo University, Faculty of Engineering | [LinkedIn](https://www.linkedin.com/in/jody-ahmed-reda2006/) |
+| Mohamed Shabban | Information Technology | Thebes Academy | [LinkedIn](https://www.linkedin.com/in/mohamed-shabban-b28174344/) |
 
 ## Credits
 
 - Elevation, shadowed-region and region data: NASA LOLA / PGDA, NASA Artemis, LROC QuickMap.
 - Flyover clips: NASA’s Scientific Visualization Studio.
 - Mission stories: NPR (Odysseus), Spaceflight Now (Athena), NASA, Space.com and others, linked in the app.
-- Character art was made by the team. The Expert-mode specialists are original characters inspired by
+- Character art was made by the team. Photos of the people who inspired the Expert council are shown on their cards with credit.
+- Use of AI: the team used an AI assistant (Claude) to help write code, process the NASA data and edit text. The idea, workflow and characters are the team's.
+- The Expert-mode specialists are original characters inspired by
   the fields of real Arab scientists and astronauts (credited on their cards); their dialogue is invented
   and is never presented as the words of those people.
 - Odysseus and Athena are Intuitive Machines missions.
+
+## Source
+
+[github.com/omarahmedgooda-arch/Suhail-Moon-Landing-Planner](https://github.com/omarahmedgooda-arch/Suhail-Moon-Landing-Planner)
 
 ## License
 

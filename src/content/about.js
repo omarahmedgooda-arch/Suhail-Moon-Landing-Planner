@@ -3,11 +3,20 @@ import { SOURCES } from './characters.js';
 
 export const TEAM = {
   name: 'FASA Destination Team',
-  university: 'Elsewedy University of Technology (SUT)',
+  university: 'Elsewedy University of Technology (SUTech)',
   event: 'NASA Space Apps Challenge · Cairo 2026',
   challenge: 'Lunar Landing Site Navigator',
-  // Add member names here, e.g. ['Omar …', 'Joudy Ahmed', …]. An empty list hides the line.
-  members: [],
+  repo: 'https://github.com/omarahmedgooda-arch/Suhail-Moon-Landing-Planner',
+  live: 'https://suhail-moon-landing-planner.vercel.app/',
+  // One entry per member. Study year is left out on purpose.
+  members: [
+    { name: 'Omar Ahmed Gooda', university: 'Elsewedy University of Technology (SUTech)', faculty: 'Faculty of Computer Engineering', field: 'Network & Cyber Security', linkedin: 'https://www.linkedin.com/in/omar-ahmed-gooda-7486ab388/' },
+    { name: 'Sara Ibrahim Sobhy', university: 'Cairo University', faculty: 'Faculty of Engineering', field: 'Electrical Power Engineering', linkedin: 'https://www.linkedin.com/in/sara-i-919356247/' },
+    { name: 'Bilal Magdy Abdel Malk', university: 'Elsewedy University of Technology (SUTech)', faculty: 'Faculty of Computer Engineering', field: 'Network & Cyber Security', linkedin: 'https://www.linkedin.com/in/bilal-magdy-abdelmalk/' },
+    { name: 'Sara Hassan Ayyad', university: 'Elsewedy University of Technology (SUTech)', faculty: 'Faculty of Computer Engineering', field: 'AI & Data Science', linkedin: 'https://www.linkedin.com/in/sara-hassan-ayyad-8759a6367/' },
+    { name: 'Jody Ahmed Reda', university: 'Cairo University', faculty: 'Faculty of Engineering', field: 'Computer Engineering', linkedin: 'https://www.linkedin.com/in/jody-ahmed-reda2006/' },
+    { name: 'Mohamed Shabban', university: 'Thebes Academy', faculty: 'Information Technology', field: null, linkedin: 'https://www.linkedin.com/in/mohamed-shabban-b28174344/' },
+  ],
 };
 
 export const DATA_RESOURCES = [

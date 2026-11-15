@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Avatar } from '../components/Avatar.jsx';
 import { SourceLink } from '../components/ui.jsx';
-import { videoUrl } from '../components/RegionMedia.jsx';
+import StoryScene from '../components/StoryScene.jsx';
 import { castFor } from '../content/cast.js';
 import Game from './Game.jsx';
 import { ACADEMY_ASPECTS, MISSION_STORIES } from '../content/academy.js';
@@ -25,28 +25,75 @@ function StageBar({ stage, done, onGo }) {
 }
 
 /* ------------------------------------------------------------------ WATCH */
+function Story({ m, onDone }) {
+  const [i, setI] = useState(0);
+  const [guess, setGuess] = useState(null);
+  const st = m.steps[i];
+  const last = i === m.steps.length - 1;
+  const needGuess = !!st.guess && guess == null;
+  const go = (n) => { setI(n); if (m.steps[n]?.guess == null) setGuess(null); if (n === m.steps.length - 1) onDone(); };
+  const pickGuess = (k) => setGuess(k);
+  const g = st.guess && guess != null ? st.guess.options[guess] : null;
+  return (
+    <div className="ms-player">
+      <div className="ms-stage">
+        <StoryScene key={`${m.id}-${i}`} scene={st.scene} />
+        {st.badge && <div className="ms-badge"><strong>{st.badge}</strong><span>on the Moon</span></div>}
+      </div>
+      <p className="ms-k">{m.name} · {st.k}</p>
+      <div className="ms-say" key={`say-${m.id}-${i}`}>
+        <Avatar id="leader" mood={st.guess ? 'thinking' : last ? 'happy' : 'happy'} size={110} mode="student" />
+        <div className="bubble"><div className="bubble-head"><strong>{cast.leader.name}</strong><span>{cast.leader.role}</span></div>
+          <p>{st.say}</p>
+          {g && <p className="small" role="status" style={{ marginTop: 8 }}>{g.ok ? 'Exactly right! Let’s see it happen.' : 'Good guess, but not this time. Let’s see what really happened.'}</p>}
+        </div>
+      </div>
+      {st.guess && (
+        <ul className="ms-guess" aria-label="Your guess">
+          {st.guess.options.map((o, k) => (
+            <li key={o.t}><button type="button" disabled={guess != null} aria-pressed={guess === k}
+              className={guess == null ? '' : o.ok ? 'right' : guess === k ? 'wrong' : ''} onClick={() => pickGuess(k)}>{o.t}</button></li>
+          ))}
+        </ul>
+      )}
+      <div className="ms-nav">
+        <div className="dots" aria-label={`Step ${i + 1} of ${m.steps.length}`}>
+          {m.steps.map((x, k) => (<button key={k} type="button" className={`dot ${k === i ? 'on' : ''} ${k < i ? 'seen' : ''}`} aria-label={`Step ${k + 1}: ${x.k}`} disabled={k > i} onClick={() => go(k)} />))}
+        </div>
+        <button type="button" className="btn btn-ghost" disabled={i === 0} onClick={() => go(i - 1)}>← Back</button>
+        {!last && <button type="button" className="btn btn-primary" disabled={needGuess} onClick={() => go(i + 1)}>{needGuess ? 'Make a guess first' : 'Next →'}</button>}
+        {!last && <button type="button" className="btn btn-ghost ms-skip" onClick={() => go(m.steps.length - 1)}>Skip to the lesson</button>}
+      </div>
+      <SourceLink source={m.source} />
+    </div>
+  );
+}
+
 function Watch({ onNext }) {
+  const [cur, setCur] = useState(MISSION_STORIES[0].id);
+  const [seen, setSeen] = useState({});
+  const m = MISSION_STORIES.find((x) => x.id === cur);
+  const allSeen = MISSION_STORIES.every((x) => seen[x.id]);
   return (
     <section aria-labelledby="ac-watch">
       <h3 className="title" id="ac-watch">Mission stories</h3>
-      <p className="lead small">Reaching the Moon is not enough. These two landers made it to the surface near the south pole, and both ended up on their side.</p>
-      <div className="story-grid">
-        {MISSION_STORIES.map((m) => (
-          <article key={m.id} className="story-card panel">
-            <header><p className="eyebrow">{m.code} · {m.year}</p><h4 className="story-name">{m.name}</h4></header>
-            {videoUrl(m.video) && (<figure className="rm-video"><video src={videoUrl(m.video)} muted loop playsInline autoPlay controls preload="metadata" /><figcaption className="muted small">{m.videoNote} Credit: NASA SVS.</figcaption></figure>)}
-            <dl className="story-dl">
-              <div><dt>Mission objective</dt><dd>{m.objective}</dd></div>
-              <div><dt>What happened?</dt><dd>{m.happened}</dd></div>
-              <div><dt>Outcome</dt><dd>{m.outcome}</dd></div>
-              <div className="lesson"><dt>Main lesson</dt><dd>{m.lesson}</dd></div>
-            </dl>
-            <SourceLink source={m.source} />
-          </article>
+      <p className="lead small">Reaching the Moon is not enough. Two landers made it to the surface near the south pole, and both ended up on their side. Watch what happened, and guess before the Wise Doctor tells you.</p>
+      <div className="ms-tabs" role="tablist" aria-label="Missions">
+        {MISSION_STORIES.map((x) => (
+          <button key={x.id} type="button" role="tab" aria-selected={cur === x.id} className={`ms-tab ${seen[x.id] ? 'done' : ''}`} onClick={() => setCur(x.id)}>
+            <strong>{x.name}</strong><span>{x.code} · {x.year}</span>
+          </button>
         ))}
       </div>
-      <p className="callout">Landing on the Moon is only the beginning. Choosing the right landing site can make all the difference!</p>
-      <div className="cta-row"><button type="button" className="btn btn-primary" onClick={onNext}>Ready to discover how scientists choose a landing site? →</button></div>
+      <Story key={m.id} m={m} onDone={() => setSeen((s) => ({ ...s, [m.id]: true }))} />
+      {seen[m.id] && !allSeen && (
+        <div className="cta-row"><button type="button" className="btn btn-primary" onClick={() => setCur(MISSION_STORIES.find((x) => !seen[x.id]).id)}>Next mission: {MISSION_STORIES.find((x) => !seen[x.id]).name} →</button></div>
+      )}
+      {allSeen && (<>
+        <p className="callout">Landing on the Moon is only the beginning. Choosing the right landing site can make all the difference!</p>
+        <div className="cta-row"><button type="button" className="btn btn-primary" onClick={onNext}>Ready to discover how scientists choose a landing site? →</button></div>
+      </>)}
+      {!allSeen && <div className="cta-row"><button type="button" className="btn btn-ghost" onClick={onNext}>Skip to the five aspects →</button></div>}
     </section>
   );
 }

@@ -862,3 +862,75 @@ table.rank-table .cell .mono { white-space: pre; display: inline-block; vertical
 .g-scene.mini { max-height: 130px; }
 .chat-ctl { background: color-mix(in srgb, var(--ink) 94%, transparent); border-top: 1px solid var(--line); padding-bottom: max(10px, env(safe-area-inset-bottom, 0px)); }
 .player .seg button { min-height: 44px; min-width: 44px; }
+
+/* Team cards on the home page */
+.members { margin-top: 40px; }
+.member-grid { list-style: none; margin: 14px 0 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr)); gap: 14px; }
+.member { display: grid; grid-template-columns: 52px minmax(0, 1fr); gap: 14px; align-items: start; padding: 16px 18px; border: 1px solid var(--line); border-radius: var(--radius-sm); background: color-mix(in srgb, var(--plum) 45%, transparent); }
+.member-mono { display: grid; place-items: center; width: 52px; height: 52px; border-radius: 50%; background: var(--indigo); color: var(--cream); font-family: var(--font-display); font-weight: 700; font-size: 1.1rem; letter-spacing: .04em; }
+.member-body { display: grid; gap: 3px; min-width: 0; }
+.member-body strong { font-family: var(--font-display); font-size: 1.12rem; }
+.member-field { font-size: .95rem; color: var(--text); }
+.member-uni { font-size: .84rem; line-height: 1.45; color: var(--text-muted); }
+.member-in { margin-top: 6px; font-size: .88rem; color: var(--cream); width: fit-content; }
+.team-links a { color: var(--cream); }
+.insp-credit { margin-top: 2px; font-size: .72rem; }
+
+/* Mission stories: animated scenes (StoryScene.jsx) */
+.ss-earth-big { fill: var(--indigo); stroke: var(--cream); stroke-width: 2; }
+.ss-earth-land { fill: none; stroke: var(--lav); stroke-width: 3; stroke-linecap: round; }
+.ss-moon { fill: color-mix(in srgb, var(--cream) 55%, var(--ink)); stroke: var(--cream); stroke-width: 1.5; }
+.ss-moon-crater { fill: color-mix(in srgb, var(--cream) 30%, var(--ink)); }
+.ss-path { fill: none; stroke: var(--lav); stroke-width: 2; stroke-dasharray: 6 8; animation: ss-dash 3.2s ease-out both; }
+.ss-target ellipse { fill: none; stroke: var(--cream); stroke-width: 2; stroke-dasharray: 6 6; }
+.ss-target text { font: 600 13px var(--font-mono); fill: var(--cream); letter-spacing: .1em; text-transform: uppercase; }
+.ss-speed path { stroke: var(--lav); stroke-width: 2; stroke-linecap: round; opacity: .7; animation: ss-speed .35s linear infinite; }
+.ss-weak path { opacity: .25; }
+.ss-days { font: 600 12px var(--font-mono); fill: var(--lav); text-transform: uppercase; letter-spacing: .08em; }
+.ss-cold-ground { fill: color-mix(in srgb, var(--cream) 22%, var(--ink)); }
+.ss-move { transform: translate(400px, 230px); }
+.ss-descend-slow { transform: translate(400px, 150px); animation: ss-slow 3s ease-out both; }
+.ss-descend-fast { transform: translate(400px, 160px); animation: ss-fast 1.1s cubic-bezier(.5,0,1,1) both, ss-shake .18s 1.1s linear infinite alternate; }
+.ss-land-tip { transform: translate(400px, 222px); animation: ss-drop .7s cubic-bezier(.6,0,1,1) both; }
+.ss-land-tip .ss-fall { transform: translate(30px, -8px) rotate(72deg) translate(-30px, 0); animation: ss-tip 1.6s .7s cubic-bezier(.5,-0.2,.4,1.2) both; }
+.ss-drift { transform: translate(470px, 140px); animation: ss-drift 3s ease-in-out both; }
+.ss-into-crater { transform: translate(520px, 283px); animation: ss-crater 1.6s cubic-bezier(.5,0,.9,1) both; }
+.ss-into-crater .ss-fall { transform: translate(30px, -8px) rotate(72deg) translate(-30px, 0); animation: ss-tip 1.4s 1.6s cubic-bezier(.5,-0.2,.4,1.2) both; }
+@keyframes ss-dash { from { stroke-dashoffset: 600; opacity: 0; } to { stroke-dashoffset: 0; opacity: 1; } }
+@keyframes ss-slow { from { transform: translate(400px, -20px); } }
+@keyframes ss-fast { from { transform: translate(400px, -40px); } }
+@keyframes ss-shake { to { transform: translate(403px, 162px); } }
+@keyframes ss-drop { from { transform: translate(400px, 20px); } }
+@keyframes ss-tip { 0% { transform: translate(30px, 0) rotate(0deg) translate(-30px, 0); } 25% { transform: translate(30px, 0) rotate(-6deg) translate(-30px, 0); } }
+@keyframes ss-drift { from { transform: translate(200px, -20px); } }
+@keyframes ss-crater { 0% { transform: translate(470px, 140px); } 60% { transform: translate(520px, 200px); } }
+@keyframes ss-speed { from { transform: translateY(-10px); opacity: 0; } 50% { opacity: .8; } to { transform: translateY(20px); opacity: 0; } }
+.ss-still *, .ss-still { animation: none !important; }
+
+/* Mission stories: player */
+.ms-tabs { display: flex; flex-wrap: wrap; gap: 10px; margin: 16px 0 6px; }
+.ms-tab { display: grid; gap: 2px; text-align: start; padding: 10px 16px; border-radius: var(--radius-sm); border: 1.5px solid var(--line-strong); background: var(--surface-1); color: var(--text); font: inherit; cursor: pointer; }
+.ms-tab strong { font-family: var(--font-display); font-size: 1.15rem; }
+.ms-tab span { font: 600 .72rem var(--font-mono); text-transform: uppercase; letter-spacing: .08em; color: var(--text-muted); }
+.ms-tab[aria-selected="true"] { border-color: var(--cream); background: color-mix(in srgb, var(--plum) 60%, transparent); }
+.ms-tab.done span::after { content: ' · seen ✓'; }
+.ms-player { display: grid; gap: 14px; margin-top: 10px; }
+.ms-stage { position: relative; max-width: 900px; width: 100%; margin-inline: auto; }
+.ms-stage .g-scene { max-width: 900px; margin-inline: auto; }
+.ms-badge { position: absolute; inset-block-start: 12px; inset-inline-start: 12px; display: grid; justify-items: center; padding: 8px 14px; border-radius: var(--radius-sm); background: var(--cream); color: var(--ink); }
+.ms-badge strong { font-family: var(--font-display); font-size: 1.5rem; line-height: 1; }
+.ms-badge span { font: 600 .66rem var(--font-mono); text-transform: uppercase; letter-spacing: .08em; }
+.ms-k { font: 600 .74rem var(--font-mono); text-transform: uppercase; letter-spacing: .1em; color: var(--lav); margin: 0; }
+.ms-say { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 14px; align-items: center; animation: slidein .4s var(--ease) both; }
+.ms-say .bubble p { margin: 0; font-size: 1.05rem; }
+.ms-guess { list-style: none; padding: 0; margin: 4px 0 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr)); gap: 10px; }
+.ms-guess button { width: 100%; height: 100%; text-align: start; padding: 12px 14px; border-radius: var(--radius-sm); border: 1.5px solid var(--line-strong); background: var(--surface-1); color: var(--text); font: inherit; cursor: pointer; }
+.ms-guess button:hover:not(:disabled) { border-color: var(--cream); }
+.ms-guess button.right { border: 2px solid var(--cream); }
+.ms-guess button.wrong { border: 2px dashed var(--lav); }
+.ms-guess button:disabled { cursor: default; }
+.ms-nav { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+.ms-nav .dots { margin: 0 auto 0 0; }
+.ms-skip { margin-inline-start: auto; }
+@media (max-width: 520px) { .ms-say { grid-template-columns: minmax(0, 1fr); } }
+@media (prefers-reduced-motion: reduce) { .ms-say { animation: none; } }
