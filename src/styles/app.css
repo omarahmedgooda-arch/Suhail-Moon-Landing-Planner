@@ -917,7 +917,7 @@ table.rank-table .cell .mono { white-space: pre; display: inline-block; vertical
 .ms-player { display: grid; gap: 14px; margin-top: 10px; }
 .ms-stage { position: relative; max-width: 900px; width: 100%; margin-inline: auto; }
 .ms-stage .g-scene { max-width: 900px; margin-inline: auto; }
-.ms-badge { position: absolute; inset-block-start: 12px; inset-inline-start: 12px; display: grid; justify-items: center; padding: 8px 14px; border-radius: var(--radius-sm); background: var(--cream); color: var(--ink); }
+.ms-badge { position: absolute; top: 12px; left: 12px; display: grid; justify-items: center; padding: 8px 14px; border-radius: var(--radius-sm); background: var(--cream); color: var(--ink); }
 .ms-badge strong { font-family: var(--font-display); font-size: 1.5rem; line-height: 1; }
 .ms-badge span { font: 600 .66rem var(--font-mono); text-transform: uppercase; letter-spacing: .08em; }
 .ms-k { font: 600 .74rem var(--font-mono); text-transform: uppercase; letter-spacing: .1em; color: var(--lav); margin: 0; }
@@ -934,3 +934,22 @@ table.rank-table .cell .mono { white-space: pre; display: inline-block; vertical
 .ms-skip { margin-inline-start: auto; }
 @media (max-width: 520px) { .ms-say { grid-template-columns: minmax(0, 1fr); } }
 @media (prefers-reduced-motion: reduce) { .ms-say { animation: none; } }
+
+/* Language switch + Arabic */
+.lang-switch { display: inline-flex; margin-inline-start: auto; border: 1px solid var(--line-strong); border-radius: 99px; overflow: hidden; flex: none; }
+.lang-switch button { background: transparent; color: var(--text-muted); border: 0; padding: 5px 12px; font: 600 .82rem var(--font-body); cursor: pointer; }
+.lang-switch button[aria-pressed="true"] { background: var(--cream); color: var(--ink); }
+.lang-switch button:focus-visible { outline: 2px solid var(--cream); outline-offset: -2px; }
+:root[lang="ar"] { --font-display: 'IBM Plex Sans Arabic', 'Fraunces', Georgia, serif; --font-body: 'IBM Plex Sans Arabic', 'IBM Plex Sans', ui-sans-serif, system-ui, sans-serif; }
+:root[lang="ar"] body { line-height: 1.75; }
+:root[lang="ar"] h1, :root[lang="ar"] h2, :root[lang="ar"] h3, :root[lang="ar"] h4 { font-weight: 700; letter-spacing: 0; }
+:root[lang="ar"] .eyebrow, :root[lang="ar"] .hc-k, :root[lang="ar"] .ms-k, :root[lang="ar"] .bubble-head span, :root[lang="ar"] .k { letter-spacing: 0; text-transform: none; }
+:root[lang="ar"] .brand-name { font-family: 'Fraunces', Georgia, serif; }
+:root[dir="rtl"] .ms-say .bubble, :root[dir="rtl"] .g-say.left .bubble { border-radius: 20px 20px 6px 20px; }
+:root[dir="rtl"] .ms-say .bubble::before, :root[dir="rtl"] .g-say.left .bubble::before { left: auto; right: -9px; transform: rotate(-135deg); }
+:root[dir="rtl"] .g-say.right .bubble { border-radius: 20px 20px 20px 6px; }
+:root[dir="rtl"] .g-say.right .bubble::before { right: auto; left: -9px; transform: rotate(45deg); }
+.num { direction: ltr; unicode-bidi: isolate; }
+
+:root[lang="ar"] .eyebrow, :root[lang="ar"] .hc-k, :root[lang="ar"] .ms-k, :root[lang="ar"] .bubble-head span, :root[lang="ar"] .ms-tab span, :root[lang="ar"] .g-tag, :root[lang="ar"] .source-k, :root[lang="ar"] .story-dl dt, :root[lang="ar"] .mode-chip, :root[lang="ar"] .ss-days, :root[lang="ar"] .ss-target text, :root[lang="ar"] .ms-badge span { font-family: var(--font-body); letter-spacing: 0; text-transform: none; }
+:root[lang="ar"] .ms-badge strong { font-size: 1.15rem; }

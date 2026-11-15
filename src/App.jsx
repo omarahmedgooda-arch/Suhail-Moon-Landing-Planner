@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { ModeContext } from './components/ModeContext.js';
+import { LangContext, loadLang, saveLang } from './i18n.js';
 import { simulateEnergy } from './engine/energy.js';
 import Academy from './app/Academy.jsx';
 import CastPage from './app/CastPage.jsx';
@@ -43,6 +44,9 @@ export default function App({ data: dataProp }) {
   const [raw, setRaw] = useState(dataProp ?? null);
   const [error, setError] = useState(null);
   const [mode, setMode] = useState('student');
+  const [lang, setLangState] = useState(loadLang);
+  const setLang = useCallback((v) => { setLangState(v); saveLang(v); }, []);
+  useEffect(() => { document.documentElement.lang = lang; document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr'; }, [lang]);
   const [view, setView] = useState('home');
   const [student, setStudent] = useState(defaultStudent);
   const [expert, setExpert] = useState(null);
@@ -135,9 +139,10 @@ export default function App({ data: dataProp }) {
   if (!data || !expert || !replanDraft) return <main className="loading"><SuhailStar size={72} /><p>Finding the stars…</p></main>;
 
   return (
+    <LangContext.Provider value={lang}>
     <ModeContext.Provider value={mode}>
       <Starfield />
-      <TopBar mode={mode} view={view} hasRun={!!run} isSample={!!data.is_sample} onNav={go} onHome={() => go('home')} onBack={back} />
+      <TopBar lang={lang} setLang={setLang} mode={mode} view={view} hasRun={!!run} isSample={!!data.is_sample} onNav={go} onHome={() => go('home')} onBack={back} />
       <main>
         {view === 'home' && <Home onStudent={() => { setMode('student'); go('academy'); }} onExpert={() => { setMode('expert'); go('expert'); }} />}
         {view === 'expert' && <ExpertStart onNew={() => go('new')} onReplan={() => go('replan')} onCast={() => go('cast')} />}
@@ -158,9 +163,10 @@ export default function App({ data: dataProp }) {
       <footer className="footer">
         <div className="wrap foot-row">
           <p className="foot-brand"><SuhailStar size={28} glow={false} /> <span><strong>SUHAIL</strong></span></p>
-          <p className="muted small">FASA Destination Team · NASA Space Apps Cairo 2026 · data: NASA LOLA, NASA Artemis III regions, NASA SVS.</p>
+          <p className="muted small">{lang === 'ar' ? 'فريق FASA Destination · تحدي ناسا Space Apps القاهرة 2026 · البيانات: NASA LOLA، مناطق Artemis III، NASA SVS.' : 'FASA Destination Team · NASA Space Apps Cairo 2026 · data: NASA LOLA, NASA Artemis III regions, NASA SVS.'}</p>
         </div>
       </footer>
     </ModeContext.Provider>
+    </LangContext.Provider>
   );
 }

@@ -16,13 +16,13 @@ export const POSE_OF_MOOD = { happy: 'explain', thinking: 'idea', confused: 'ide
 
 /* ------------------------------------------------------------------ STUDENT cast */
 const STUDENT = {
-  sunlight: { name: 'Hagras', role: 'Solar radiation', meaning: 'the crew’s “power expert”', quirk: 'Thinks a giant flashlight can replace the Sun.' },
-  night: { name: 'Dr. Rabie', role: 'Thermal & day cycle', meaning: 'the crew’s “doctor of heat”', quirk: 'Wants to open the windows when it gets cold.' },
-  comms: { name: 'Am Ba’zaq', role: 'Earth communication', meaning: 'the shuttle driver, hates the radio', quirk: 'Plans to shout really loudly toward Earth.' },
-  terrain: { name: 'Hazalqum', role: 'Terrain slope', meaning: 'the crew’s impulsive pilot', quirk: 'Wants to land wherever it looks “interesting”.' },
-  science: { name: 'Ashraf', role: 'Scientific target', meaning: 'came for the trip, not the science', quirk: 'Happy to land next to any random rock.' },
+  sunlight: { name: 'Hagras', role: 'Solar radiation', meaning: 'the crew’s “power expert”', quirk: 'Thinks a giant flashlight can replace the Sun.', name_ar: 'هجرس', role_ar: 'الإشعاع الشمسي', meaning_ar: '«خبير الطاقة» بتاع الطاقم', quirk_ar: 'فاكر إن كشاف كبير ممكن يعوّض الشمس.' },
+  night: { name: 'Dr. Rabie', role: 'Thermal & day cycle', meaning: 'the crew’s “doctor of heat”', quirk: 'Wants to open the windows when it gets cold.', name_ar: 'د. ربيع', role_ar: 'الحرارة والليل والنهار', meaning_ar: '«دكتور الحرارة» بتاع الطاقم', quirk_ar: 'عايز يفتح الشبابيك لما الجو يبرد.' },
+  comms: { name: 'Am Ba’zaq', role: 'Earth communication', meaning: 'the shuttle driver, hates the radio', quirk: 'Plans to shout really loudly toward Earth.', name_ar: 'عم بعزق', role_ar: 'الاتصال بالأرض', meaning_ar: 'سوّاق المكوك، وبيكره الراديو', quirk_ar: 'ناوي يزعّق بصوت عالي ناحية الأرض.' },
+  terrain: { name: 'Hazalqum', role: 'Terrain slope', meaning: 'the crew’s impulsive pilot', quirk: 'Wants to land wherever it looks “interesting”.', name_ar: 'حزلقوم', role_ar: 'ميل الأرض', meaning_ar: 'الطيار المتهوّر بتاع الطاقم', quirk_ar: 'عايز ينزل في أي حتة شكلها «حلو».' },
+  science: { name: 'Ashraf', role: 'Scientific target', meaning: 'came for the trip, not the science', quirk: 'Happy to land next to any random rock.', name_ar: 'أشرف', role_ar: 'الهدف العلمي', meaning_ar: 'جاي يتفسح مش يذاكر', quirk_ar: 'مبسوط ينزل جنب أي صخرة والسلام.' },
 };
-const STUDENT_LEADER = { id: 'leader', name: 'The Wise Doctor', role: 'Mission expert', meaning: 'the calm one who fixes everything' };
+const STUDENT_LEADER = { id: 'leader', name: 'The Wise Doctor', role: 'Mission expert', meaning: 'the calm one who fixes everything', name_ar: 'الدكتور الحكيم', role_ar: 'خبير المهمة', meaning_ar: 'الهادي اللي بيصلّح كل حاجة' };
 
 /* ------------------------------------------------------------------ EXPERT cast */
 // Names are Arabic sky names, like Suhail itself. Inspirations chosen by the team.

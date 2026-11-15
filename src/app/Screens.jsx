@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { tx, useLang, useT } from '../i18n.js';
 import { PoleMap } from '../components/MapViews.jsx';
 import { videoUrl } from '../components/RegionMedia.jsx';
 import { useReducedMotion } from '../hooks.js';
@@ -14,60 +15,67 @@ import { DataWindowNote, ReasonChips, RequirementsEditor, SitePicker, StudentPic
 
 /* ------------------------------------------------------------------ home */
 export function Home({ onStudent, onExpert }) {
+  const t = useT();
+  const lang = useLang();
   return (
     <section className="home calm" aria-labelledby="home-t">
       <div className="wrap">
         <header className="home-head">
-          <SuhailStar size={120} label="Suhail, the guiding star" />
+          <SuhailStar size={120} label={t('Suhail, the guiding star', 'سهيل، النجم الهادي')} />
           <div>
-            <p className="eyebrow">Lunar Landing Site Navigator</p>
-            <h1 className="display" id="home-t">SUHAIL</h1>
-            <p className="lead">Choosing where to land near the Moon’s south pole, explained and computed. SUHAIL is named after Suhail (Canopus), the star Arab navigators steered by.</p>
+            <p className="eyebrow">{t('Lunar Landing Site Navigator', 'دليل اختيار موقع الهبوط على القمر')}</p>
+            <h1 className="display brand-word" id="home-t">SUHAIL</h1>
+            <p className="lead">{t('Choosing where to land near the Moon’s south pole, explained and computed. SUHAIL is named after Suhail (Canopus), the star Arab navigators steered by.',
+              'نختار أين نهبط قرب القطب الجنوبي للقمر، بالحساب والشرح. سُمّي المشروع على اسم نجم سهيل (Canopus)، النجم الذي اهتدى به الملاحون العرب.')}</p>
           </div>
         </header>
 
-        <h2 className="sec-h">Choose your mode</h2>
+        <h2 className="sec-h">{t('Choose your mode', 'اختر الوضع')}</h2>
         <ul className="mode-cards">
           <li>
             <button type="button" className="mode-card" onClick={onStudent}>
-              <span className="hc-k">Student</span>
-              <strong>Lunar Landing Academy</strong>
-              <span>Watch two real missions that tipped over, learn the five things that decide a landing site, then save a mission run by a very silly crew.</span>
-              <span className="hc-go" aria-hidden="true">Start learning →</span>
+              <span className="hc-k">{t('Student', 'للطلاب')}</span>
+              <strong>{t('Lunar Landing Academy', 'أكاديمية الهبوط على القمر')}</strong>
+              <span>{t('Watch two real missions that tipped over, learn the five things that decide a landing site, then save a mission run by a very silly crew.',
+                'اتفرج على مهمتين حقيقيتين اتقلبوا على القمر، واتعلم الخمس حاجات اللي بتحدد مكان الهبوط، وبعدين أنقذ مهمة مع طاقم غلبان جدًا.')}</span>
+              <span className="hc-go" aria-hidden="true">{t('Start learning →', 'يلا نتعلم ←')}</span>
             </button>
           </li>
           <li>
             <button type="button" className="mode-card" onClick={onExpert}>
-              <span className="hc-k">Expert</span>
-              <strong>Mission planner</strong>
-              <span>Enter your mission’s requirements, screen NASA’s Artemis III regions on every date, simulate power and temperature, and get a go / no-go with dates.</span>
-              <span className="hc-go" aria-hidden="true">Plan a mission →</span>
+              <span className="hc-k">{t('Expert', 'للخبراء')}</span>
+              <strong>{t('Mission planner', 'مخطِّط المهمة')}</strong>
+              <span>{t('Enter your mission’s requirements, screen NASA’s Artemis III regions on every date, simulate power and temperature, and get a go / no-go with dates.',
+                'أدخل متطلبات مهمتك، وافحص مناطق Artemis III التابعة لناسا في كل تاريخ ممكن، وحاكِ الطاقة ودرجة الحرارة، واحصل على قرار الهبوط مع أفضل التواريخ.')}</span>
+              <span className="hc-go" aria-hidden="true">{t('Plan a mission →', 'خطّط مهمة ←')}</span>
             </button>
           </li>
         </ul>
 
         <div className="about-grid">
           <section aria-labelledby="ov-t">
-            <h2 className="sec-h" id="ov-t">Overview</h2>
-            <p>Landers have reached the Moon and still failed because of <em>where</em> they touched down: a slope, a shadow, a hill between them and Earth. SUHAIL checks the five things that decide a landing site — solar radiation, thermal environment, Earth communication, terrain slope and distance to science targets — using real NASA elevation data and hour-by-hour Sun and Earth geometry.</p>
+            <h2 className="sec-h" id="ov-t">{t('Overview', 'نظرة عامة')}</h2>
+            <p>{t('Landers have reached the Moon and still failed because of where they touched down: a slope, a shadow, a hill between them and Earth. SUHAIL checks the five things that decide a landing site — solar radiation, thermal environment, Earth communication, terrain slope and distance to science targets — using real NASA elevation data and hour-by-hour Sun and Earth geometry.',
+              'مركبات وصلت إلى القمر ثم فشلت بسبب المكان الذي هبطت فيه: منحدر، أو ظل، أو تل يحجب الأرض. يفحص سهيل العوامل الخمسة التي تحدد موقع الهبوط — الإشعاع الشمسي، والبيئة الحرارية، والاتصال بالأرض، وميل التضاريس، والقرب من الأهداف العلمية — باستخدام بيانات ارتفاعات حقيقية من ناسا ومواقع الشمس والأرض ساعة بساعة.')}</p>
           </section>
           <section aria-labelledby="team-t">
-            <h2 className="sec-h" id="team-t">The team</h2>
-            <p><strong>{TEAM.name}</strong> is six engineering and computing students from three Egyptian universities, building SUHAIL for the {TEAM.event}, challenge “{TEAM.challenge}”.</p>
-            <p className="team-links"><a href={TEAM.repo} target="_blank" rel="noreferrer">Source code on GitHub ↗</a></p>
+            <h2 className="sec-h" id="team-t">{t('The team', 'الفريق')}</h2>
+            <p>{t(<><strong>{TEAM.name}</strong> is six engineering and computing students from three Egyptian universities, building SUHAIL for the {TEAM.event}, challenge “{TEAM.challenge}”.</>,
+              <><strong>{TEAM.name}</strong>: ستة طلاب هندسة وحاسبات من ثلاث جامعات مصرية، صمّمنا سهيل لتحدي ناسا Space Apps بالقاهرة 2026، تحدي «{TEAM.challenge}».</>)}</p>
+            <p className="team-links"><a href={TEAM.repo} target="_blank" rel="noreferrer">{t('Source code on GitHub ↗', 'الكود على GitHub ↗')}</a></p>
           </section>
         </div>
 
         <section aria-labelledby="mem-t" className="members">
-          <h2 className="sec-h" id="mem-t">Meet the team</h2>
+          <h2 className="sec-h" id="mem-t">{t('Meet the team', 'تعرّف على الفريق')}</h2>
           <ul className="member-grid">
             {TEAM.members.map((m) => (
               <li key={m.name} className="member">
                 <span className="member-mono" aria-hidden="true">{m.name.split(' ').filter(Boolean).slice(0, 2).map((w) => w[0]).join('')}</span>
                 <div className="member-body">
-                  <strong>{m.name}</strong>
-                  <span className="member-field">{m.field ?? m.faculty}</span>
-                  <span className="member-uni">{[m.field ? m.faculty : null, m.university].filter(Boolean).join(', ')}</span>
+                  <strong>{tx(m, 'name', lang)}</strong>
+                  <span className="member-field">{tx(m, 'field', lang) ?? tx(m, 'faculty', lang)}</span>
+                  <span className="member-uni">{[m.field ? tx(m, 'faculty', lang) : null, tx(m, 'university', lang)].filter(Boolean).join(lang === 'ar' ? '، ' : ', ')}</span>
                   {m.linkedin && <a className="member-in" href={m.linkedin} target="_blank" rel="noreferrer" aria-label={`${m.name} on LinkedIn`}>LinkedIn ↗</a>}
                 </div>
               </li>
@@ -76,34 +84,35 @@ export function Home({ onStudent, onExpert }) {
         </section>
 
         <section aria-labelledby="res-t" className="resources">
-          <h2 className="sec-h" id="res-t">Resources we used</h2>
-          <h3 className="mini-h">Data</h3>
+          <h2 className="sec-h" id="res-t">{t('Resources we used', 'المصادر التي استخدمناها')}</h2>
+          <h3 className="mini-h">{t('Data', 'البيانات')}</h3>
           <ul className="res-list">
-            {DATA_RESOURCES.map((r) => (<li key={r.label + r.use}><a href={r.url} target="_blank" rel="noreferrer">{r.label} ↗</a><span className="muted small">{r.use}</span></li>))}
+            {DATA_RESOURCES.map((r) => (<li key={r.label + r.use}><a href={r.url} target="_blank" rel="noreferrer">{r.label} ↗</a><span className="muted small">{tx(r, 'use', lang)}</span></li>))}
           </ul>
-          <h3 className="mini-h">Mission stories</h3>
+          <h3 className="mini-h">{t('Mission stories', 'قصص المهمات')}</h3>
           <ul className="res-list">
             {STORY_RESOURCES.map((r) => (<li key={r.url}><a href={r.url} target="_blank" rel="noreferrer">{r.label} ↗</a></li>))}
           </ul>
-          <p className="field-note">Honest limits: the elevation grid is 80 m per pixel, Sun/Earth positions come from an astronomy model (not NASA SPICE), and the requirement levels are team assumptions, not NASA standards.</p>
+          <p className="field-note">{t('Honest limits: the elevation grid is 80 m per pixel, Sun/Earth positions come from an astronomy model (not NASA SPICE), and the requirement levels are team assumptions, not NASA standards.',
+            'حدود نذكرها بصراحة: دقة شبكة الارتفاعات 80 مترًا للبكسل، ومواقع الشمس والأرض محسوبة بنموذج فلكي (وليس NASA SPICE)، ومستويات المتطلبات افتراضات من الفريق وليست معايير ناسا.')}</p>
         </section>
       </div>
     </section>
   );
 }
 
-/** Expert mode start: create a new mission or replan an old one. */
 export function ExpertStart({ onNew, onReplan, onCast }) {
+  const t = useT();
   return (
     <section className="stage" aria-labelledby="xs-t">
       <div className="wrap narrow">
-        <p className="eyebrow">Expert mode</p>
-        <h2 className="title" id="xs-t">What do you want to do?</h2>
+        <p className="eyebrow">{t('Expert mode', 'وضع الخبراء')}</p>
+        <h2 className="title" id="xs-t">{t('What do you want to do?', 'ماذا تريد أن تفعل؟')}</h2>
         <ul className="mode-cards">
-          <li><button type="button" className="mode-card" onClick={onNew}><span className="hc-k">Option 1</span><strong>Create a new mission</strong><span>Enter the requirements; SUHAIL finds the best places and dates.</span><span className="hc-go" aria-hidden="true">Begin →</span></button></li>
-          <li><button type="button" className="mode-card" onClick={onReplan}><span className="hc-k">Option 2</span><strong>Replan an old mission</strong><span>Enter the old plan, why it changed and the new terms.</span><span className="hc-go" aria-hidden="true">Replan →</span></button></li>
+          <li><button type="button" className="mode-card" onClick={onNew}><span className="hc-k">{t('Option 1', 'الخيار 1')}</span><strong>{t('Create a new mission', 'إنشاء مهمة جديدة')}</strong><span>{t('Enter the requirements; SUHAIL finds the best places and dates.', 'أدخل المتطلبات، ويجد سهيل أفضل المواقع والتواريخ.')}</span><span className="hc-go" aria-hidden="true">{t('Begin →', 'ابدأ ←')}</span></button></li>
+          <li><button type="button" className="mode-card" onClick={onReplan}><span className="hc-k">{t('Option 2', 'الخيار 2')}</span><strong>{t('Replan an old mission', 'إعادة تخطيط مهمة سابقة')}</strong><span>{t('Enter the old plan, why it changed and the new terms.', 'أدخل الخطة القديمة وسبب تغييرها والشروط الجديدة.')}</span><span className="hc-go" aria-hidden="true">{t('Replan →', 'أعد التخطيط ←')}</span></button></li>
         </ul>
-        <p className="home-learn"><button type="button" className="link-btn" onClick={onCast}>Meet the council: the five specialists who argue about every site</button></p>
+        <p className="home-learn"><button type="button" className="link-btn" onClick={onCast}>{t('Meet the council: the five specialists who argue about every site', 'تعرّف على المجلس: خمسة متخصصين يتناقشون في كل موقع')}</button></p>
       </div>
     </section>
   );

@@ -1,6 +1,7 @@
 // Animated 2D scenes for the Student "Mission stories" (Odysseus, Athena). Pure SVG + CSS, palette only.
 // Each scene restarts its animation when it mounts (the parent keys it by step).
 import { useReducedMotion } from '../hooks.js';
+import { useLang } from '../i18n.js';
 
 const FLAT = 'M0 232 C150 226 300 234 400 230 S650 226 800 232 V300 H0Z';
 const CRATER = 'M0 222 C140 218 250 226 330 224 C380 224 410 236 440 262 C480 290 560 290 600 262 C630 238 660 226 720 224 C760 223 790 224 800 224 V300 H0Z';
@@ -51,6 +52,7 @@ const LABEL = {
 
 export default function StoryScene({ scene }) {
   const reduced = useReducedMotion();
+  const ar = useLang() === 'ar';
   const cls = `g-scene ss ss-${scene} ${reduced ? 'ss-still' : ''}`;
   const common = { viewBox: '0 0 800 300', className: cls, role: 'img', 'aria-label': LABEL[scene] };
 
@@ -81,15 +83,15 @@ export default function StoryScene({ scene }) {
     <svg {...common}>
       <Sky {...sun} earthWeak={scene === 'side' || scene === 'cold'} />
       <path d={ground} className={`g-ground ${scene === 'cold' ? 'ss-cold-ground' : ''}`} />
-      {scene === 'approach' && (<g className="ss-target"><ellipse cx="400" cy="232" rx="70" ry="10" /><text x="400" y="266" textAnchor="middle">target</text></g>)}
-      {scene === 'guess-crater' && (<g className="ss-target"><ellipse cx="200" cy="224" rx="60" ry="9" /><text x="200" y="256" textAnchor="middle">target</text></g>)}
+      {scene === 'approach' && (<g className="ss-target"><ellipse cx="400" cy="232" rx="70" ry="10" /><text x="400" y="266" textAnchor="middle">{ar ? 'الهدف' : 'target'}</text></g>)}
+      {scene === 'guess-crater' && (<g className="ss-target"><ellipse cx="200" cy="224" rx="60" ry="9" /><text x="200" y="256" textAnchor="middle">{ar ? 'الهدف' : 'target'}</text></g>)}
       {(scene === 'tip' || scene === 'side') && [[330, 226, 9], [470, 228, 6]].map(([x, y, r]) => (<circle key={x} cx={x} cy={y} r={r} className="g-rock" />))}
       {scene === 'fast' && (<g className="ss-speed">{[-30, 0, 30].map((dx) => (<path key={dx} d={`M${400 + dx} 20 v40`} />))}</g>)}
 
       {scene === 'approach' && (<g className="ss-move ss-descend-slow"><Lander flame /></g>)}
       {scene === 'fast' && (<g className="ss-move ss-descend-fast"><Lander flame /><text x="0" y="-80" textAnchor="middle" className="l-q">?</text></g>)}
       {scene === 'tip' && (<g className="ss-move ss-land-tip"><g className="ss-fall"><Lander /></g></g>)}
-      {scene === 'side' && (<g transform="translate(400 222)"><Lander tipped quiet /><text x="70" y="-46" className="ss-days">no signal up</text></g>)}
+      {scene === 'side' && (<g transform="translate(400 222)"><Lander tipped quiet /><text y={ar ? -100 : -46} className="ss-days" textAnchor={ar ? 'middle' : 'start'} x={ar ? 20 : 70}>{ar ? 'إشارة ضعيفة' : 'no signal up'}</text></g>)}
       {scene === 'guess-crater' && (<g className="ss-move ss-drift"><Lander flame /><text x="0" y="-80" textAnchor="middle" className="l-q">?</text></g>)}
       {scene === 'crater' && (<g className="ss-move ss-into-crater"><g className="ss-fall"><Lander /></g></g>)}
       {scene === 'cold' && (<g transform="translate(520 283)"><Lander tipped dark frost quiet /></g>)}

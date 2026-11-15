@@ -3,6 +3,7 @@ import { Avatar } from '../components/Avatar.jsx';
 import { castFor } from '../content/cast.js';
 import { GAME_DOCTOR, GAME_MISSIONS, GAME_ROUNDS_V2, gameResult } from '../content/game.js';
 import { useReducedMotion } from '../hooks.js';
+import { tx, useLang, useT } from '../i18n.js';
 
 const cast = castFor('student');
 const METERS = ['Stability', 'Power', 'Heat', 'Signal', 'Science'];
@@ -89,6 +90,9 @@ function Scene({ scene, state, mini = false }) {
 /* ------------------------------------------------------------------ game */
 export default function Game({ onFinish, onHome }) {
   const reduced = useReducedMotion();
+  const lang = useLang();
+  const t = useT();
+  const L = cast.leader;
   const [mission, setMission] = useState(null);
   const [round, setRound] = useState(0);
   const [choice, setChoice] = useState(null);
@@ -118,15 +122,15 @@ export default function Game({ onFinish, onHome }) {
   const reset = () => { setMission(null); setRound(0); setChoice(null); setLanded(false); setHint(false); setScore(0); setOver(false); setMeters(Object.fromEntries(METERS.map((m) => [m, 100]))); };
 
   const state = choice == null ? 'hover' : !landed ? 'descend' : opt.kind === 'good' ? 'ok' : `fail-${R.aspect}`;
-  const res = useMemo(() => gameResult(meters), [meters]);
+  const res = useMemo(() => gameResult(meters, lang), [meters, lang]);
 
   if (!mission) {
     return (
       <section aria-labelledby="g-pick">
-        <div className="game-line wise intro"><Avatar id="leader" mood="happy" size={120} mode="student" /><div className="bubble"><div className="bubble-head"><strong>{cast.leader.name}</strong><span>{cast.leader.role}</span></div><p>{GAME_DOCTOR.intro}</p></div></div>
-        <h3 className="title" id="g-pick">Pick your mission, Commander</h3>
+        <div className="game-line wise intro"><Avatar id="leader" mood="happy" size={120} mode="student" /><div className="bubble"><div className="bubble-head"><strong>{tx(L, 'name', lang)}</strong><span>{tx(L, 'role', lang)}</span></div><p>{tx(GAME_DOCTOR, 'intro', lang)}</p></div></div>
+        <h3 className="title" id="g-pick">{t('Pick your mission, Commander', 'اختار مهمتك يا قائد')}</h3>
         <ul className="g-missions">
-          {GAME_MISSIONS.map((m) => (<li key={m.id}><button type="button" className="mode-card" onClick={() => setMission(m)}><span className="g-ico" aria-hidden="true">{m.icon}</span><strong>{m.name}</strong><span>{m.blurb}</span><span className="hc-go" aria-hidden="true">Launch →</span></button></li>))}
+          {GAME_MISSIONS.map((m) => (<li key={m.id}><button type="button" className="mode-card" onClick={() => setMission(m)}><span className="g-ico" aria-hidden="true">{m.icon}</span><strong>{tx(m, 'name', lang)}</strong><span>{tx(m, 'blurb', lang)}</span><span className="hc-go" aria-hidden="true">{t('Launch →', 'انطلق ←')}</span></button></li>))}
         </ul>
       </section>
     );
@@ -137,13 +141,13 @@ export default function Game({ onFinish, onHome }) {
       <section className="game-over panel" aria-labelledby="g-end">
         <div className="g-final"><Scene scene={res.ok ? 'flat' : 'boulders'} state={res.ok ? 'ok' : 'fail-terrain'} /></div>
         <div>
-          <p className="eyebrow">{mission.name} · final report</p>
+          <p className="eyebrow">{tx(mission, 'name', lang)} · {t('final report', 'التقرير النهائي')}</p>
           <h3 className="title" id="g-end">{res.title}</h3>
           <p className="score-big mono">{score}<small>/500</small></p>
           <p>{res.text}</p>
-          <Meters meters={meters} />
-          <blockquote className="doctor-quote"><strong>{cast.leader.name}:</strong> Choosing a landing site is about five things at once: ground, sunlight, heat, the link home and the science. Real teams check all five, every time.</blockquote>
-          <div className="cta-row"><button type="button" className="btn btn-primary" onClick={reset}>Play again</button><button type="button" className="btn btn-ghost" onClick={onHome}>Back to the start</button></div>
+          <Meters meters={meters} lang={lang} />
+          <blockquote className="doctor-quote"><strong>{tx(L, 'name', lang)}:</strong> {t('Choosing a landing site is about five things at once: ground, sunlight, heat, the link home and the science. Real teams check all five, every time.', 'اختيار مكان الهبوط معناه خمس حاجات مع بعض: الأرض، والشمس، والحرارة، والاتصال بالأرض، والعلم. الفرق الحقيقية بتراجع الخمسة كل مرة.')}</blockquote>
+          <div className="cta-row"><button type="button" className="btn btn-primary" onClick={reset}>{t('Play again', 'العب تاني')}</button><button type="button" className="btn btn-ghost" onClick={onHome}>{t('Back to the start', 'ارجع للبداية')}</button></div>
         </div>
       </section>
     );
@@ -151,43 +155,44 @@ export default function Game({ onFinish, onHome }) {
 
   return (
     <section aria-labelledby="g-round">
-      <div className="game-top"><h3 className="title" id="g-round">{mission.name} · {round + 1}/5: {R.title}</h3><span className="score mono">Score {score}</span></div>
-      <Meters meters={meters} active={R.meter} />
+      <div className="game-top"><h3 className="title" id="g-round">{tx(mission, 'name', lang)} · <span className="num">{round + 1}/5</span>: {tx(R, 'title', lang)}</h3><span className="score mono">{t('Score', 'النقاط')} {score}</span></div>
+      <Meters meters={meters} active={R.meter} lang={lang} />
       <div className="g-stage">
         <Scene scene={opt ? opt.scene : 'flat'} state={state} />
         <div className="g-crew">
-          <div className="g-say left"><Avatar id={R.aspect} mood={choice == null ? 'thinking' : opt.kind === 'good' ? 'worried' : 'happy'} size={120} mode="student" /><div className="bubble"><div className="bubble-head"><strong>{who.name}</strong><span>{who.role}</span></div><p>“{R.silly}”</p></div></div>
+          <div className="g-say left"><Avatar id={R.aspect} mood={choice == null ? 'thinking' : opt.kind === 'good' ? 'worried' : 'happy'} size={120} mode="student" /><div className="bubble"><div className="bubble-head"><strong>{tx(who, 'name', lang)}</strong><span>{tx(who, 'role', lang)}</span></div><p>“{tx(R, 'silly', lang)}”</p></div></div>
           {(hint || (choice != null && landed)) && (
-            <div className="g-say right"><div className="bubble"><div className="bubble-head"><strong>{cast.leader.name}</strong><span>{cast.leader.role}</span></div>
-              <p>{choice == null ? R.hint : opt.kind === 'good' ? `${pick(GAME_DOCTOR.good, round)} ${R.win}` : `${pick(GAME_DOCTOR.bad, round)} ${R.lose[opt.kind]}`}</p></div>
+            <div className="g-say right"><div className="bubble"><div className="bubble-head"><strong>{tx(L, 'name', lang)}</strong><span>{tx(L, 'role', lang)}</span></div>
+              <p>{choice == null ? tx(R, 'hint', lang) : opt.kind === 'good' ? `${pick(tx(GAME_DOCTOR, 'good', lang), round)} ${tx(R, 'win', lang)}` : `${pick(tx(GAME_DOCTOR, 'bad', lang), round)} ${tx(R, 'lose', lang)[opt.kind]}`}</p></div>
               <Avatar id="leader" mood={choice == null ? 'thinking' : opt.kind === 'good' ? 'happy' : 'thinking'} size={120} mode="student" /></div>
           )}
         </div>
       </div>
-      <ul className="g-options" aria-label="Your options">
+      <ul className="g-options" aria-label={t('Your options', 'اختياراتك')}>
         {R.options.map((o, i) => (
           <li key={o.text}>
             <button type="button" disabled={choice != null} className={`g-opt ${choice === i ? (o.kind === 'good' ? 'right' : 'wrong') : ''} ${choice != null && o.kind === 'good' && choice !== i ? 'reveal' : ''}`} onClick={() => choose(i)}>
               <Scene scene={o.scene} state="hover" mini />
-              <span>{o.text}{o.kind === 'silly' && <em className="g-tag">{who.name}’s idea</em>}</span>
+              <span>{tx(o, 'text', lang)}{o.kind === 'silly' && <em className="g-tag">{t(`${who.name}’s idea`, `فكرة ${tx(who, 'name', lang)}`)}</em>}</span>
             </button>
           </li>
         ))}
       </ul>
       <div className="cta-row">
-        {choice == null && !hint && <button type="button" className="btn btn-ghost" onClick={() => setHint(true)}>Ask the Wise Doctor for a hint (−40 pts)</button>}
-        {choice != null && landed && <button type="button" className="btn btn-primary" onClick={next}>{round === 4 ? 'Final report →' : 'Next decision →'}</button>}
+        {choice == null && !hint && <button type="button" className="btn btn-ghost" onClick={() => setHint(true)}>{t('Ask the Wise Doctor for a hint (−40 pts)', 'اسأل الدكتور الحكيم عن تلميح (−40 نقطة)')}</button>}
+        {choice != null && landed && <button type="button" className="btn btn-primary" onClick={next}>{round === 4 ? t('Final report →', 'التقرير النهائي ←') : t('Next decision →', 'القرار اللي بعده ←')}</button>}
       </div>
     </section>
   );
 }
 
-function Meters({ meters, active }) {
+const METER_AR = { Stability: 'الثبات', Power: 'الطاقة', Heat: 'الحرارة', Signal: 'الإشارة', Science: 'العلم' };
+function Meters({ meters, active, lang }) {
   return (
-    <ul className="g-meters" aria-label="Mission gauges">
+    <ul className="g-meters" aria-label={lang === 'ar' ? 'مؤشرات المهمة' : 'Mission gauges'}>
       {METERS.map((m) => (
         <li key={m} className={`${active === m ? 'on' : ''} ${meters[m] < 50 ? 'low' : ''}`}>
-          <span>{m}</span><span className="g-bar"><i style={{ width: `${meters[m]}%` }} /></span><span className="mono">{meters[m]}%</span>
+          <span>{lang === 'ar' ? METER_AR[m] : m}</span><span className="g-bar"><i style={{ width: `${meters[m]}%` }} /></span><span className="mono">{meters[m]}%</span>
         </li>
       ))}
     </ul>
