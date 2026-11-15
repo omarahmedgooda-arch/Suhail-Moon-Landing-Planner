@@ -4,6 +4,16 @@
   "version": "1.0.0",
   "type": "module",
   "description": "SUHAIL – Lunar Landing Site Navigator. FASA Destination Team · NASA Space Apps Challenge Cairo 2026.",
+  "author": "FASA Destination Team",
+  "contributors": [
+    "Omar Ahmed Gooda",
+    "Sara Ibrahim Sobhy",
+    "Bilal Magdy Abdel Malk",
+    "Sara Hassan Ayyad",
+    "Jody Ahmed Reda",
+    "Mohamed Shabban"
+  ],
+  "license": "MIT",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
