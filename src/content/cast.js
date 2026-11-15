@@ -46,7 +46,7 @@ export const EXPERT = {
     voice: 'Precise and quietly stubborn. Thinks in kelvin and in worst cases; asks “and what happens in the longest dark hour?” every single time.',
     cares: 'Longest darkness, surface temperature range, heater power, battery endurance.', redLine: 'No darkness longer than the battery endurance on the night-time load.',
     risk: 'Low', argues: 'From worst-case analysis.',
-    inspired: { who: 'Dina Tantawy', where: 'Egypt', what: 'Egyptian engineer in the space industry, chosen by the team as a role model for young Arab women engineers.', photo: 'tantawy.jpg', source: null },
+    inspired: { who: 'Tahani Amer', where: 'Egypt / USA', what: 'NASA engineer who grew up near Cairo and joined NASA in 1992, working on computational fluid dynamics and wind-tunnel tests with pressure- and thermal-sensitive paint; she patented a system for measuring the thermal conductivity of thin films.', photo: 'amer.jpg', source: { label: 'NASA – Tahani Amer', url: 'https://www.nasa.gov/people/tahani-amer' } },
   },
   comms: {
     name: 'Nasr', meaning: 'an-Nasr = the eagle stars (Vega, Altair)', role: 'Communications officer · link lead',
