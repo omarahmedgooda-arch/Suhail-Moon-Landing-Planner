@@ -60,4 +60,4 @@ Output: `src/data/real-sites.json` + `src/assets/map/*.webp`. Do not hand-edit t
 - Report as PDF without the print dialog; share link; saving missions between visits.
 
 ## Commit attribution
-Commits are authored by the team member who made them; if an AI assistant helped, add a `Co-Authored-By:` line.
+Commits are authored by the team member who made them; if an AI assistant helped, add a `Co-Authored-By:` line.  
