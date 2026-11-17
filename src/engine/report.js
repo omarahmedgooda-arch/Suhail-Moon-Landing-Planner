@@ -162,19 +162,8 @@ export function buildReportJson(run, data) {
   };
 }
 
-/** Save a text file. Inside a claude.ai Artifact the page may not download by itself, so the viewer's
- *  `downloads` capability is used when it exists (the viewer confirms). Everywhere else: a normal download. */
-export async function downloadText(filename, text, mime) {
-  try {
-    const claude = typeof window !== 'undefined' ? window.claude : null;
-    if (claude && typeof claude.use === 'function') {
-      const downloads = await claude.use('downloads');
-      if (downloads) {
-        try { await downloads.save({ filename, data: text }); return 'saved'; }
-        catch (e) { if (e && e.code === 'declined') return 'declined'; /* anything else: fall through to the plain download */ }
-      }
-    }
-  } catch { /* no capability layer: plain download below */ }
+/** Save a text file as a normal browser download. */
+export function downloadText(filename, text, mime) {
   const url = URL.createObjectURL(new Blob([text], { type: mime }));
   const a = document.createElement('a');
   a.href = url; a.download = filename; document.body.appendChild(a); a.click(); a.remove();
