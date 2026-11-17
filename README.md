@@ -170,4 +170,4 @@ More for contributors: [`docs/DEVELOPER.md`](docs/DEVELOPER.md) and [`CONTRIBUTI
 
 ## License
 
-[MIT](LICENSE) © 2026 FASA Destination Team · Source: [github.com/omarahmedgooda-arch/suhail-moon-landing-planner](https://github.com/omarahmedgooda-arch/suhail-moon-landing-planner)
+[MIT](LICENSE) © 2026 FASA Destination Team · Source: [github.com/omarahmedgooda-arch/suhail-moon-landing-planner](https://github.com/omarahmedgooda-arch/suhail-moon-landing-planner) 
