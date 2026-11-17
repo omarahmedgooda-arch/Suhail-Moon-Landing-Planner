@@ -1,4 +1,4 @@
-# Contributing to SUHAIL
+ # Contributing to SUHAIL
 
 Rules and context for anyone (or any AI coding assistant) working on this project.
 
